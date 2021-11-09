@@ -18,6 +18,8 @@ public class JumpKing : MonoBehaviour
     
     public float movementStrength = 100;
     private Vector2 movementInput = Vector2.zero;
+    
+    private Vector2 JumpDirection = Vector2.zero;
 
     public float ReflectMultiplayer = 1;
     
@@ -31,11 +33,17 @@ public class JumpKing : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.D))
         {
-            movementInput.x = 1;
+            movementInput.x = movementStrength;
+            JumpDirection.x = 1;
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            movementInput.x = -1;
+            movementInput.x = -movementStrength;
+            JumpDirection.x = -1;
+        }
+        else
+        {
+            //_body.velocity = new Vector2(0, _body.velocity.y);
         }
         
         if (Input.GetButtonDown("Jump"))
@@ -60,7 +68,11 @@ public class JumpKing : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 JumpDir = (movementInput + Vector2.up).normalized;
+        Vector2 JumpDir = (JumpDirection + Vector2.up).normalized;
+
+        _body.AddForce(movementInput);
+        
+        movementInput = Vector2.zero;
         
         if (Jump)
         {
