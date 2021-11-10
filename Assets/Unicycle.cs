@@ -11,6 +11,7 @@ public class Unicycle : MonoBehaviour
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float rotationSpeed = 50f;
     [SerializeField] private float inputSmoothing;
+    public bool RagDolling = false;
 
     private void Start()
     {
@@ -30,6 +31,8 @@ public class Unicycle : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(RagDolling) return;
+        
         if (Input.GetKey(KeyCode.D))
         {
             rb.angularVelocity -= velocity;

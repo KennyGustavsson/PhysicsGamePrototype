@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D.IK;
 
 public class Ragdoll : MonoBehaviour
 {
-    //[SerializeField] private Animator animator;
+    [SerializeField] private float CollisionForceToRagDoll;
+    [SerializeField] private Unicycle UniCycle;
+    
     [SerializeField] private Collider2D[] colliders;
     [SerializeField] private HingeJoint2D[] joints;
     [SerializeField] private Rigidbody2D[] rigidbodies;
@@ -19,10 +19,15 @@ public class Ragdoll : MonoBehaviour
         solvers = GetComponentsInChildren<LimbSolver2D>();
     }
 
-    private void Start() => ToggleRagdoll(true);
+    private void Start() => ToggleRagdoll(false);
 
     public void ToggleRagdoll(bool enableRagdoll)
     {
+        if (UniCycle)
+        {
+            UniCycle.RagDolling = enableRagdoll;
+        }
+        
         foreach(var col in colliders)
         {
             if (col == this.GetComponent<Collider2D>()) continue;
@@ -44,6 +49,13 @@ public class Ragdoll : MonoBehaviour
         foreach (var solver in solvers)
         {
             solver.weight = enableRagdoll ? 0 : 1;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.relativeVelocity.magnitude > CollisionForceToRagDoll){
+            ToggleRagdoll(true);
         }
     }
 }
