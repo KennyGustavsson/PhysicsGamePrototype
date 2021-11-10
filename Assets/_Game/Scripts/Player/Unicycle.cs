@@ -1,53 +1,76 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Unicycle : MonoBehaviour
 {
+    [Header("Movement")]
+    [SerializeField] private float Speed = 50f;
+    [SerializeField] private float JumpForce = 600.0f;
+    [SerializeField] private float MaxAngularVelocity = 360.0f;
+    
+    [Header("GroundCheck")]
+    [SerializeField] private GameObject Body;
+    [SerializeField] private float GroundRayCastLength = 2;
+    [SerializeField] private int LayerMask = 7;
+    
+    [NonSerialized] public bool RagDolling = false;
     private Rigidbody2D rb;
-    public float velocity = 50f;
-    [SerializeField] private Vector2 currentInputVector;
-    private Vector2 smoothInputVelocity;
-    [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float rotationSpeed = 50f;
-    [SerializeField] private float inputSmoothing;
-    public bool RagDolling = false;
+    private bool OnGround = false;
+    
+#region Inputs
+    private bool Jump;
+    private bool Left;
+    private bool Right;
+    private bool Stop;
+#endregion
 
-    private void Start()
+    private void Awake() => rb = GetComponent<Rigidbody2D>();
+
+    private void Update()
     {
-        rb = GetComponent<Rigidbody2D>();
+        var Hit = Physics2D.Raycast(transform.position, -Body.transform.right, GroundRayCastLength, ~(1<<LayerMask));
+        OnGround = Hit.collider;
+        
+        if (OnGround && Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump = true;
+        }
+        
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            Stop = true;
+        }
+        
+        Right = Input.GetKey(KeyCode.D);
+        Left = Input.GetKey(KeyCode.A);
     }
-
-    //private void Update()
-    //{
-    //    currentInputVector = Vector2.SmoothDamp(currentInputVector, new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")), ref smoothInputVelocity, inputSmoothing);
-
-    //    Vector3 pos = transform.position;
-    //    pos += new Vector3(currentInputVector.x, 0f, 0f) * moveSpeed * Time.deltaTime;
-
-    //    transform.position = pos;
-    //    transform.eulerAngles -= new Vector3(0, 0, currentInputVector.x * rotationSpeed * Time.deltaTime);
-    //}
 
     private void FixedUpdate()
     {
         if(RagDolling) return;
         
-        if (Input.GetKey(KeyCode.D))
+        if (Right)
         {
-            rb.angularVelocity -= velocity;
+            rb.angularVelocity -= Speed * Time.deltaTime;
+            rb.angularVelocity = Mathf.Clamp(rb.angularVelocity, -MaxAngularVelocity, MaxAngularVelocity);
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Left)
         {
-            rb.angularVelocity += velocity;
-
+            rb.angularVelocity += Speed * Time.deltaTime;
+            rb.angularVelocity = Mathf.Clamp(rb.angularVelocity, -MaxAngularVelocity, MaxAngularVelocity);
         }
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Stop)
         {
             rb.angularVelocity = 0f;
+            Stop = false;
+        }
 
+        if (Jump)
+        {
+            rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
+            Jump = false;
         }
     }
 }
