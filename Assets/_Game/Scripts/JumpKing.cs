@@ -1,27 +1,22 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.U2D.IK;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class JumpKing : MonoBehaviour
 {
+    public float Mass = 1.0f;
     private Rigidbody2D _body;
+
     private bool ChargeJump = false;
     public float JumpCharge = 0f;
     private bool Jump = false;
-    private Vector2 CrossHair;
-    private Vector2 PlayerPos;
-    private bool IsGroundeed = false;
-
-    public float Multiplayer = 1;
     
+    private Vector2 PlayerPos;
+    public float Multiplayer = 1;
     public float movementStrength = 100;
     private Vector2 movementInput = Vector2.zero;
-    
     private Vector2 JumpDirection = Vector2.zero;
-
-    public float ReflectMultiplayer = 1;
+    
+    public LayerMask WallLayer;
     
     private void Awake()
     {
@@ -31,6 +26,8 @@ public class JumpKing : MonoBehaviour
 
     void Update()
     {
+        PlayerPos = transform.position;
+        
         if (Input.GetKey(KeyCode.D))
         {
             movementInput.x = movementStrength;
@@ -61,15 +58,18 @@ public class JumpKing : MonoBehaviour
         {
             JumpCharge += Time.deltaTime * Multiplayer;
         }
+
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+
+        renderer.color = new Color(JumpCharge / Multiplayer, 0,0);
         
-        CrossHair = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
-        PlayerPos = transform.position;
+        //_body.velocity = CollisionCheck(_body.velocity, PlayerPos);
     }
 
     private void FixedUpdate()
     {
         Vector2 JumpDir = (JumpDirection + Vector2.up).normalized;
-
+       
         _body.AddForce(movementInput);
         
         movementInput = Vector2.zero;
@@ -84,7 +84,7 @@ public class JumpKing : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        _body.velocity = Reflect(_body.velocity * ReflectMultiplayer, other.contacts[0].normal);
+        _body.velocity = Reflect(_body.velocity, other.contacts[0].normal);
     }
 
     public Vector3 Reflect(Vector3 InDirection, Vector3 InNormal)
@@ -92,21 +92,23 @@ public class JumpKing : MonoBehaviour
         return -2.0f * Vector3.Dot(InNormal, InDirection) * InNormal + InDirection;
     }
 
-    Vector2 CollisionCheck(Vector3 Vel, Vector3 Pos)
+    Vector2 CollisionCheck(Vector2 Vel, Vector2 Pos)
     {
-        Vector2 dir = _body.velocity.normalized;
-        float Length = dir.magnitude;
+        float Length = Vel.magnitude;
+        Vector2 dir = Vel.normalized;
         
-        RaycastHit2D hit = Physics2D.Raycast(PlayerPos, dir, Length);
+        RaycastHit2D hit = Physics2D.Raycast(Pos, dir, Length, WallLayer);
 
+        Debug.DrawLine(Pos,Pos + dir);
+        
         if (hit.collider != null)
         {
-            Vector2 reflectedVector = Reflect(_body.velocity, hit.normal);
+            Vector2 reflectedVector = Reflect(dir, hit.normal);
+            float Impact = 0.5f * Mass * Mathf.Pow(Vel.magnitude, 2);
 
-            Vel = reflectedVector;
+            Vel = (reflectedVector * Impact) / Mass; // New impulse when collide
         }
-        
-        
+
         return Vel;
     }
 
