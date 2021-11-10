@@ -1,15 +1,14 @@
 using UnityEngine;
 using UnityEngine.U2D.IK;
 
-public class Ragdoll : MonoBehaviour{
-    public bool Ragooooool;
-    
+public class Ragdoll : MonoBehaviour
+{
     public float CollisionForceToRagDoll;
     [SerializeField] private Unicycle UniCycle;
     [SerializeField] private Rigidbody2D CharacterRigidBody;
-    [SerializeField] private WheelJoint2D WheelJoint;
-    [SerializeField] private IKManager2D IKManager;
-    [SerializeField] private LimbSolver2D[] solvers;
+    [SerializeField] public WheelJoint2D WheelJoint;
+    [SerializeField] public IKManager2D IKManager;
+    [SerializeField] public LimbSolver2D[] solvers;
     
     [SerializeField] private Collider2D[] activeColliders;
     [SerializeField] private Rigidbody2D[] activeRigidbodies;
@@ -17,6 +16,8 @@ public class Ragdoll : MonoBehaviour{
     [SerializeField] private Collider2D[] colliders;
     [SerializeField] private HingeJoint2D[] joints;
     [SerializeField] private Rigidbody2D[] rigidbodies;
+
+    public bool RagdollActive = false;
 
     private void Awake()
     {
@@ -27,15 +28,10 @@ public class Ragdoll : MonoBehaviour{
 
     private void Start() => ToggleRagdoll(false);
 
-    private void Update(){
-        if (Ragooooool){
-            ToggleRagdoll(true);
-            Ragooooool = false;
-        }
-    }
-
     public void ToggleRagdoll(bool enableRagdoll)
     {
+        RagdollActive = enableRagdoll;
+        
         IKManager.weight = enableRagdoll ? 0 : 1;
         WheelJoint.enabled = !enableRagdoll;
         CharacterRigidBody.simulated = !enableRagdoll;

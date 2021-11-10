@@ -15,7 +15,7 @@ public class Unicycle : MonoBehaviour
     
     [NonSerialized] public bool RagDolling = false;
     private Rigidbody2D rb;
-    private bool OnGround = false;
+    [NonSerialized] public bool OnGround = false;
     
 #region Inputs
     private bool Jump;
