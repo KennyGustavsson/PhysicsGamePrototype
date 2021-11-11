@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         Vector3 CameraPos = transform.position;
-        Vector3 NewPos = new Vector3(CameraPos.x, FollowPos.position.y, CameraPos.z);
+        Vector3 NewPos = new Vector3(FollowPos.position.x, FollowPos.position.y, CameraPos.z);
         transform.position = NewPos;
     }
 }
