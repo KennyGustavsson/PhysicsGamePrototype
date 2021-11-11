@@ -3,6 +3,8 @@ using UnityEngine.U2D.IK;
 
 public class Ragdoll : MonoBehaviour
 {
+    public Rigidbody2D characterRigidboy;
+
     public float CollisionForceToRagDoll;
     [SerializeField] private Unicycle UniCycle;
     [SerializeField] private Rigidbody2D CharacterRigidBody;
@@ -43,7 +45,7 @@ public class Ragdoll : MonoBehaviour
 
         foreach (var rb in rigidbodies)
         {
-            rb.velocity = enableRagdoll ? rb.velocity.normalized : rb.velocity;
+            rb.velocity = enableRagdoll ? characterRigidboy.velocity : rb.velocity;
             rb.angularVelocity = enableRagdoll ? Mathf.Clamp(rb.angularVelocity, 0.0f, 1.0f) : rb.angularVelocity;
             
             rb.simulated = enableRagdoll;
@@ -62,14 +64,15 @@ public class Ragdoll : MonoBehaviour
             solver.weight = enableRagdoll ? 0 : 1;
         }
         
-        foreach (var col in activeColliders)
-        {
-            col.enabled = !enableRagdoll;
-        }
 
         foreach(var col in colliders)
         {
             col.enabled = enableRagdoll;
+        }
+
+        foreach (var col in activeColliders)
+        {
+            col.enabled = !enableRagdoll;
         }
 
         foreach (var joint in joints)
