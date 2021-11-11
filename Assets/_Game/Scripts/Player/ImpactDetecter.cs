@@ -9,9 +9,11 @@ public class ImpactDetecter : MonoBehaviour
         transform.position = transform.parent.position;
         transform.rotation = transform.parent.rotation;
     }
-    
+
     private void OnCollisionEnter2D(Collision2D other)
-    {              
+    {
+        Debug.Log(other.relativeVelocity.magnitude);
+
         if (other.relativeVelocity.magnitude > PlayerRagdoll.CollisionForceToRagDoll)
         {
             PlayerRagdoll.ToggleRagdoll(true);
