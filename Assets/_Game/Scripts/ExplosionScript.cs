@@ -1,41 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ExplosionScript : MonoBehaviour
 {
+	[Header("Explosion Effect Prefab")]
     [SerializeField] public GameObject Explosion;
-    [SerializeField]  float DestroyObjectTimer = 1;
 
-    public Ragdoll RagdollRef;
+	[Header("Explosion Options")]
+    [SerializeField] private float ExplosionRadius = 10.0f;
+    [SerializeField] private float ExplosionForce = 100.0f;
 
-    bool hasCollided;
-
-    void Update()
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if(hasCollided == true)
-        {
-            if (DestroyObjectTimer > 0)
-        {
-            DestroyObjectTimer -= Time.deltaTime;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+	    // Rag dolling
+	    if (other.transform.gameObject.layer == 6 || other.transform.gameObject.layer == 7)
+	    {
+		    Ragdoll rd = other.transform.root.GetComponentInChildren<Ragdoll>();
+		    rd.ToggleRagdoll(true);
+	    }
 
-    }
+	    Vector2 Pos = transform.position;
+	    
+	    // Instantiate explosion
+	    Instantiate(Explosion, Pos, Quaternion.identity);
+	    this.gameObject.GetComponent<SpriteRenderer>().sprite = null;
+        
+	    // Add force
+	    var Hits = Physics2D.CircleCastAll(Pos, ExplosionRadius, Vector2.up);
 
-    }
-    public void OnTriggerEnter2D(Collider2D other)
-    {
-        if (hasCollided == false)
-        {
-            Instantiate(Explosion, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
-            this.gameObject.GetComponent<SpriteRenderer>().sprite = null;
-            RagdollRef.ToggleRagdoll(true);
-        }
+	    foreach (var Hit in Hits)
+	    {
+		    Rigidbody2D rb = Hit.rigidbody;
 
-        hasCollided = true;
+		    if (rb)
+		    {
+			    rb.AddForceAtPosition(Vector2.one * ExplosionForce, Pos); 
+		    }
+	    }
+        
+	    Destroy(gameObject);
     }
 }
