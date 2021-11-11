@@ -48,8 +48,8 @@ public class TimeRewind : MonoBehaviour
         Transform trans = transform;
 
         // Save trans data
-        TimeData.Pos = trans.position;
-        TimeData.Rot = trans.rotation;
+        TimeData.Pos = trans.localPosition;
+        TimeData.Rot = trans.localRotation;
         TimeData.Scale = trans.localScale;
         
         // Save rigidbody data
@@ -78,8 +78,8 @@ public class TimeRewind : MonoBehaviour
         RewindTimeData TimeData = RewindList[^1];
 
         // Transform time data
-        transform.position = TimeData.Pos;
-        transform.rotation = TimeData.Rot;
+        transform.localPosition = TimeData.Pos;
+        transform.localRotation = TimeData.Rot;
         transform.localScale = TimeData.Scale;
 
         // Rigidbody time data
