@@ -18,10 +18,10 @@ public class Unicycle : MonoBehaviour
     [NonSerialized] public bool OnGround = false;
     
 #region Inputs
-    private bool Jump;
-    private bool Left;
-    private bool Right;
-    private bool Stop;
+    [NonSerialized] public bool Jump;
+    [NonSerialized] public bool Left;
+    [NonSerialized] public bool Right;
+    [NonSerialized] public bool Stop;
 #endregion
 
     private void Awake() => rb = GetComponent<Rigidbody2D>();
@@ -30,19 +30,6 @@ public class Unicycle : MonoBehaviour
     {
         var Hit = Physics2D.Raycast(transform.position, -Body.transform.right, GroundRayCastLength, ~(1<<LayerMask));
         OnGround = Hit.collider;
-        
-        if (OnGround && Input.GetKeyDown(KeyCode.Space))
-        {
-            Jump = true;
-        }
-        
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            Stop = true;
-        }
-        
-        Right = Input.GetKey(KeyCode.D);
-        Left = Input.GetKey(KeyCode.A);
     }
 
     private void FixedUpdate()
@@ -67,7 +54,7 @@ public class Unicycle : MonoBehaviour
             Stop = false;
         }
 
-        if (Jump)
+        if (OnGround && Jump)
         {
             rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
             Jump = false;

@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
-	// TODO make time rewind work with Ragdoll and Unicycle
-	
-    public static TimeManager Instance;
+	public static TimeManager Instance;
     public int MaxRewindFrames = 200;
     [NonSerialized] public List<TimeRewind> TimeRewinds = new List<TimeRewind>();
     [NonSerialized] public List<TimeRewindJoint> TimeRewindJoints = new List<TimeRewindJoint>();
     [NonSerialized] public List<TimeRewindCollider> TimeRewindColliders = new List<TimeRewindCollider>();
+    [NonSerialized] public List<TimeRewindTrans> TimeRewindTranses = new List<TimeRewindTrans>();
     [NonSerialized] public TimeRewindUnicycle TimeRewindUnicycle;
     [NonSerialized] public TimeRewindRagdoll TimeRewindRagdoll;
+
+    private int FrameCounter = 0;
     
     public bool RewindingTime = false;
+    public bool RewindTimeInput = false;
     private bool RewindingBoolSet = false;
 
     private void Awake()
@@ -26,9 +28,14 @@ public class TimeManager : MonoBehaviour
     private void FixedUpdate()
     {
 	    if(TimeRewinds.Count == 0) return;
-	    
+
+	    if (RewindTimeInput && FrameCounter > 0) RewindingTime = true;
+	    else RewindingTime = false;
+
 	    if (!RewindingTime)
 	    {
+		    FrameCounter = Mathf.Clamp(FrameCounter + 1, 0, MaxRewindFrames);
+		    
 		    if (!RewindingBoolSet)
 		    {
 			    // Set rewind objects rewind bool
@@ -48,6 +55,12 @@ public class TimeManager : MonoBehaviour
 			    {
 				    if (Collider)
 					    Collider.IsRewindingTime = false;
+			    }
+			    
+			    foreach (var Trans in TimeRewindTranses)
+			    {
+				    if (Trans)
+					    Trans.IsRewindingTime = false;
 			    }
 			    
 			    if(TimeRewindUnicycle)
@@ -80,6 +93,12 @@ public class TimeManager : MonoBehaviour
 		    Collider.RewindTime();
 	    }
 	    
+	    foreach (var Trans in TimeRewindTranses)
+	    {
+		    Trans.IsRewindingTime = true;
+		    Trans.RewindTime();
+	    }
+	    
 	    if (TimeRewindUnicycle)
 	    {
 		    TimeRewindUnicycle.IsRewindingTime = true;
@@ -93,14 +112,7 @@ public class TimeManager : MonoBehaviour
 	    }
 
 	    RewindingBoolSet = false;
-    }
-
-    /// <summary>
-    /// Sets if currently should rewind time
-    /// </summary>
-    /// <param name="Active"></param>
-    public void SetTimeRewind(bool Active)
-    {
-	    RewindingTime = Active;
+	    
+	    FrameCounter = Mathf.Clamp(FrameCounter - 1, 0, MaxRewindFrames);
     }
 }
