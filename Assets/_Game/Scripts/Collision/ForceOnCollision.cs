@@ -6,6 +6,7 @@ public class ForceOnCollision : MonoBehaviour
 	[SerializeField] private float AddedForce = 50.0f;
 	[SerializeField] private float KillMagnitude = 1.0f;
 	[SerializeField] private bool ScaleForceWithMagnitude = true;
+	[SerializeField] private bool OnlyOnPlayer = true;
 
 	private Rigidbody2D Rigidbody;
 
@@ -26,8 +27,24 @@ public class ForceOnCollision : MonoBehaviour
 				Ragdoll rd = other.transform.root.GetComponentInChildren<Ragdoll>();
 				rd.ToggleRagdoll(true);	
 			}
+
+			if (OnlyOnPlayer)
+			{
+				switch (ScaleForceWithMagnitude)
+				{
+					case true:
+						other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce * other.relativeVelocity.magnitude, ForceMode2D.Impulse);
+						break;
+				
+					case false:
+						other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce, ForceMode2D.Impulse);
+						break;
+				}
+			}
 		}
 
+		if(OnlyOnPlayer) return;
+		
 		switch (ScaleForceWithMagnitude)
 		{
 			case true:
