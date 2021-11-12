@@ -16,25 +16,31 @@ public class ForceOnCollision : MonoBehaviour
 	}
 
 	private void OnCollisionEnter2D(Collision2D other)
-	{
-		if (!other.rigidbody) return;
-		
-		// Rag dolling
-		if (other.transform.gameObject.layer == 6 || other.transform.gameObject.layer == 7)
-		{
-			if (other.relativeVelocity.magnitude > KillMagnitude)
-			{
-				Ragdoll rd = other.transform.root.GetComponentInChildren<Ragdoll>();
-				rd.ToggleRagdoll(true);
+    {
+        if (!other.rigidbody) return;
 
-				var impactComponents = other.transform.root.GetComponentsInChildren<ImpactDetecter>();
-                foreach (var impactComps in impactComponents)
+        // Rag dolling
+        if (other.transform.gameObject.layer == 6 || other.transform.gameObject.layer == 7)
+        {
+            if (other.relativeVelocity.magnitude > KillMagnitude)
+            {
+                Ragdoll rd = other.transform.root.GetComponentInChildren<Ragdoll>();
+                if (!rd.RagdollActive)
                 {
-					impactComps.Collision(Rigidbody.velocity.magnitude);
+					rd.ToggleRagdoll(true);	
                 }
-			}
 
-			if (OnlyOnPlayer)
+                if (other.transform.gameObject.layer == 6)
+                {
+                    var impactComponents = other.transform.root.GetComponentsInChildren<ImpactDetecter>();
+                    foreach (var impactComps in impactComponents)
+                    {
+                        impactComps.Collision(Rigidbody.velocity.magnitude);
+                    }
+                }
+            }
+
+            if (OnlyOnPlayer)
 			{
 				switch (ScaleForceWithMagnitude)
 				{

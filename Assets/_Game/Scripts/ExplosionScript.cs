@@ -8,6 +8,7 @@ public class ExplosionScript : MonoBehaviour
 	[Header("Explosion Options")]
     [SerializeField] private float ExplosionRadius = 10.0f;
     [SerializeField] private float ExplosionForce = 100.0f;
+    [SerializeField] private float BleedingEffectMultiplier = 0.33f;
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -15,12 +16,18 @@ public class ExplosionScript : MonoBehaviour
 	    if (other.transform.gameObject.layer == 6 || other.transform.gameObject.layer == 7)
 	    {
 		    Ragdoll rd = other.transform.root.GetComponentInChildren<Ragdoll>();
-		    rd.ToggleRagdoll(true);
-
-			var impactComponents = other.transform.root.GetComponentsInChildren<ImpactDetecter>();
-			foreach (var impactComps in impactComponents)
+			if (!rd.RagdollActive)
 			{
-				impactComps.Collision(ExplosionForce / 3);
+				rd.ToggleRagdoll(true);
+			}
+
+			if (other.transform.gameObject.layer == 6)
+			{
+				var impactComponents = other.transform.root.GetComponentsInChildren<ImpactDetecter>();
+				foreach (var impactComps in impactComponents)
+				{
+					impactComps.Collision(ExplosionForce * BleedingEffectMultiplier);
+				}
 			}
 		}
 

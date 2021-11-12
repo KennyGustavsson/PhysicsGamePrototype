@@ -62,8 +62,7 @@ public class Ragdoll : MonoBehaviour
         foreach (var solver in solvers)
         {
             solver.weight = enableRagdoll ? 0 : 1;
-        }
-        
+        }        
 
         foreach(var col in colliders)
         {

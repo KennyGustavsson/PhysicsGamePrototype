@@ -583,7 +583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerInterval: 2
-  Force: 50
+  Force: 20
   ChangeDirection: 1
   UseLocalDirection: 1
 --- !u!1 &6892204332387352997
