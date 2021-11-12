@@ -20,7 +20,7 @@ public class PlayerInput : MonoBehaviour
 		TimeManager.RewindTimeInput = Input.GetKey(KeyCode.R);
 
 		if(Input.GetKeyDown(KeyCode.Space)) KeySpace();
-		if(Input.GetKeyDown(KeyCode.LeftShift)) KeyLeftShift();
+		if(Input.GetKeyDown(KeyCode.LeftShift)) Unicycle.Stop = true;
 		if(Input.GetMouseButtonDown(0)) ButtonMouse0();
 		if(Input.GetMouseButtonDown(1)) ButtonMouse1();
 	}
@@ -28,11 +28,6 @@ public class PlayerInput : MonoBehaviour
 	private void KeySpace()
 	{
 		Unicycle.Jump = true;
-	}
-
-	private void KeyLeftShift()
-	{
-		Unicycle.Stop = true;
 	}
 
 	private void ButtonMouse0()

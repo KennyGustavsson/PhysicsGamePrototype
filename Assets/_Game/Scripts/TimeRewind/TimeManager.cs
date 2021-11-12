@@ -10,6 +10,7 @@ public class TimeManager : MonoBehaviour
     [NonSerialized] public List<TimeRewindJoint> TimeRewindJoints = new List<TimeRewindJoint>();
     [NonSerialized] public List<TimeRewindCollider> TimeRewindColliders = new List<TimeRewindCollider>();
     [NonSerialized] public List<TimeRewindTrans> TimeRewindTranses = new List<TimeRewindTrans>();
+    [NonSerialized] public List<TimeRewindParticle> TimeRewindParticles = new List<TimeRewindParticle>();
     [NonSerialized] public TimeRewindUnicycle TimeRewindUnicycle;
     [NonSerialized] public TimeRewindRagdoll TimeRewindRagdoll;
 
@@ -62,6 +63,12 @@ public class TimeManager : MonoBehaviour
 				    if (Trans)
 					    Trans.IsRewindingTime = false;
 			    }
+
+			    foreach (var ParticleSystem in TimeRewindParticles)
+			    {
+				    if (ParticleSystem)
+					    ParticleSystem.IsRewindingTime = false;
+			    }
 			    
 			    if(TimeRewindUnicycle)
 				    TimeRewindUnicycle.IsRewindingTime = false;
@@ -97,6 +104,12 @@ public class TimeManager : MonoBehaviour
 	    {
 		    Trans.IsRewindingTime = true;
 		    Trans.RewindTime();
+	    }
+	    
+	    foreach (var ParticleSystem in TimeRewindParticles)
+	    {
+		    ParticleSystem.IsRewindingTime = true;
+		    ParticleSystem.RewindTime();
 	    }
 	    
 	    if (TimeRewindUnicycle)
