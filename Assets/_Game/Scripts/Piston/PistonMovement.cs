@@ -39,7 +39,7 @@ public class PistonMovement : MonoBehaviour
     private IEnumerator Push()
     {        
         distanceJoint.enabled = true;
-        pistonTopRB.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+        pistonTopRB.AddForce(Vector2.down * force, ForceMode2D.Impulse);
         yield return new WaitForSeconds(1f);
         distanceJoint.enabled = false;
     }

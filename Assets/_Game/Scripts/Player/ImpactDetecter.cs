@@ -3,6 +3,17 @@ using UnityEngine;
 public class ImpactDetecter : MonoBehaviour
 {
     [SerializeField] private Ragdoll PlayerRagdoll;
+    private ParticleSystem particleSystem;
+    private float rateOverTime;
+    private float inheritedVelocityMultiplier;
+    [SerializeField] private float bloodVelocityMultiplier = 0.01f;
+
+    private void Awake()
+    {
+        particleSystem = GetComponentInChildren<ParticleSystem>();
+        rateOverTime = particleSystem.emission.rateOverTime.constant;
+        inheritedVelocityMultiplier = particleSystem.inheritVelocity.curveMultiplier;
+    }
 
     private void Update()
     {
@@ -16,7 +27,26 @@ public class ImpactDetecter : MonoBehaviour
 
         if (other.relativeVelocity.magnitude > PlayerRagdoll.CollisionForceToRagDoll)
         {
+            var emission = particleSystem.emission;
+            emission.rateOverTime = rateOverTime * other.relativeVelocity.magnitude;
+
+            var inheritedVelocity = particleSystem.inheritVelocity;
+            inheritedVelocity.curveMultiplier = inheritedVelocityMultiplier * other.relativeVelocity.magnitude * bloodVelocityMultiplier;
+
+            particleSystem.Play();
             PlayerRagdoll.ToggleRagdoll(true);
         }
+    }
+
+    public void Collision(float collisionForce)
+    {
+        var emission = particleSystem.emission;
+        emission.rateOverTime = rateOverTime * collisionForce;
+
+        var inheritedVelocity = particleSystem.inheritVelocity;
+        inheritedVelocity.curveMultiplier = inheritedVelocityMultiplier * collisionForce * bloodVelocityMultiplier;
+
+        particleSystem.Play();
+        PlayerRagdoll.ToggleRagdoll(true);
     }
 }

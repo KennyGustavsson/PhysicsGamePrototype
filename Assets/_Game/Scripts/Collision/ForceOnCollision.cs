@@ -25,7 +25,13 @@ public class ForceOnCollision : MonoBehaviour
 			if (other.relativeVelocity.magnitude > KillMagnitude)
 			{
 				Ragdoll rd = other.transform.root.GetComponentInChildren<Ragdoll>();
-				rd.ToggleRagdoll(true);	
+				rd.ToggleRagdoll(true);
+
+				var impactComponents = other.transform.root.GetComponentsInChildren<ImpactDetecter>();
+                foreach (var impactComps in impactComponents)
+                {
+					impactComps.Collision(Rigidbody.velocity.magnitude);
+                }
 			}
 
 			if (OnlyOnPlayer)

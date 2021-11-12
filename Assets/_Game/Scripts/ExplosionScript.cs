@@ -16,7 +16,13 @@ public class ExplosionScript : MonoBehaviour
 	    {
 		    Ragdoll rd = other.transform.root.GetComponentInChildren<Ragdoll>();
 		    rd.ToggleRagdoll(true);
-	    }
+
+			var impactComponents = other.transform.root.GetComponentsInChildren<ImpactDetecter>();
+			foreach (var impactComps in impactComponents)
+			{
+				impactComps.Collision(ExplosionForce / 3);
+			}
+		}
 
 	    Vector2 Pos = transform.position;
 	    
