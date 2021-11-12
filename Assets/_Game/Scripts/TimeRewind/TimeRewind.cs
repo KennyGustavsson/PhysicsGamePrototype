@@ -17,6 +17,7 @@ public class TimeRewind : MonoBehaviour
         public Vector2 Vel;
         public float AngVel;
         public bool Simulated;
+        public bool FreezeRot;
     }
     
     private List<RewindTimeData> RewindList = new List<RewindTimeData>();
@@ -56,6 +57,7 @@ public class TimeRewind : MonoBehaviour
         TimeData.Vel = Rigidbody.velocity;
         TimeData.AngVel = Rigidbody.angularVelocity;
         TimeData.Simulated = Rigidbody.simulated;
+        TimeData.FreezeRot = Rigidbody.freezeRotation;
         
         // Add time data to list
         RewindList.Add(TimeData);
@@ -86,6 +88,7 @@ public class TimeRewind : MonoBehaviour
         Rigidbody.velocity = TimeData.Vel;
         Rigidbody.angularVelocity = TimeData.AngVel;
         Rigidbody.simulated = TimeData.Simulated;
+        Rigidbody.freezeRotation = TimeData.FreezeRot;
         
         // Remove Last
         RewindList.RemoveAt(RewindList.Count - 1);
