@@ -46,7 +46,10 @@ public class ExplosionScript : MonoBehaviour
 
 		    if (rb)
 		    {
-			    rb.AddForceAtPosition(Vector2.one * ExplosionForce, Pos); 
+			    rb.AddForceAtPosition(Vector2.one * ExplosionForce, Pos);
+
+			    Vector2 Direction = (Hit.point - Pos).normalized;
+			    rb.AddForce(Direction * ExplosionForce, ForceMode2D.Impulse); 
 		    }
 	    }
         
