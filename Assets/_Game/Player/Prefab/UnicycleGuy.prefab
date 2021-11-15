@@ -428,6 +428,21 @@ Transform:
   m_Father: {fileID: 2665189046746617350}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1501192768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610937893598615961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 018da860810523e49ac3e24a4ebd9171, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerRagdoll: {fileID: 1467755521}
+  bloodVelocityMultiplier: 0.01
+  isRagdollImpact: 1
 --- !u!114 &1961776699572901051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,21 +479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b83ac4555e4954890a0a1702d8bedf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1501192768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 610937893598615961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 018da860810523e49ac3e24a4ebd9171, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerRagdoll: {fileID: 1467755521}
-  bloodVelocityMultiplier: 0.01
-  isRagdollImpact: 1
 --- !u!114 &1049793815040477179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -734,6 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f29a740e26b1b06428d4adac57088ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DoFuckingThing: 1
   OldParent: {fileID: 4743495943104267932}
   wheel: {fileID: 2955481858233920445}
   ProjectileType: {fileID: 4974102095914530021, guid: 482fe04a0817d314a92ef12bb8717641, type: 3}
