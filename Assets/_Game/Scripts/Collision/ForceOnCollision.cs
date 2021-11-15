@@ -8,6 +8,10 @@ public class ForceOnCollision : MonoBehaviour
 	[SerializeField] private bool ScaleForceWithMagnitude = true;
 	[SerializeField] private bool OnlyOnPlayer = true;
 
+	private float ForceApplyCooldown = 1f;
+	private float Timer = 0.0f;
+	private bool IsCoolingDown;
+
 	private Rigidbody2D Rigidbody;
 
 	private void Awake()
@@ -15,57 +19,80 @@ public class ForceOnCollision : MonoBehaviour
 		Rigidbody = GetComponent<Rigidbody2D>();
 	}
 
-	private void OnCollisionEnter2D(Collision2D other)
+    private void Update()
+    {
+        if (Timer > ForceApplyCooldown)
+        {
+			IsCoolingDown = false;
+			Timer = 0.0f;
+        }
+
+		Timer += Time.deltaTime;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
     {
         if (!other.rigidbody) return;
 
         // Rag dolling
         if (other.transform.gameObject.layer == 6 || other.transform.gameObject.layer == 7)
         {
-            if (other.relativeVelocity.magnitude > KillMagnitude)
+            if (!IsCoolingDown)
             {
-                Ragdoll rd = other.transform.root.GetComponentInChildren<Ragdoll>();
-                if (!rd.RagdollActive)
+                if (other.relativeVelocity.magnitude > KillMagnitude)
                 {
-					rd.ToggleRagdoll(true);	
-                }
-
-                if (other.transform.gameObject.layer == 6)
-                {
-                    var impactComponents = other.transform.root.GetComponentsInChildren<ImpactDetecter>();
-                    foreach (var impactComps in impactComponents)
+                    Ragdoll rd = other.transform.root.GetComponentInChildren<Ragdoll>();
+                    if (!rd.RagdollActive)
                     {
-                        impactComps.Collision(Rigidbody.velocity.magnitude);
+                        rd.ToggleRagdoll(true);
+                    }
+
+                    if (other.transform.gameObject.layer == 6)
+                    {
+                        var impactComponents = other.transform.root.GetComponentsInChildren<ImpactDetecter>();
+                        foreach (var impactComps in impactComponents)
+                        {
+                            impactComps.Collision(Rigidbody.velocity.magnitude);
+                        }
                     }
                 }
+
+                if (OnlyOnPlayer)
+                {
+                    switch (ScaleForceWithMagnitude)
+                    {
+                        case true:
+                            other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce * other.relativeVelocity.magnitude, ForceMode2D.Impulse);
+                            break;
+
+                        case false:
+                            other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce, ForceMode2D.Impulse);
+                            break;
+                    }                    
+                }
             }
+        }
 
-            if (OnlyOnPlayer)
-			{
-				switch (ScaleForceWithMagnitude)
-				{
-					case true:
-						other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce * other.relativeVelocity.magnitude, ForceMode2D.Impulse);
-						break;
-				
-					case false:
-						other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce, ForceMode2D.Impulse);
-						break;
-				}
-			}
-		}
+		if(OnlyOnPlayer)
+        {
+            IsCoolingDown = true;
+            return;
+        }
 
-		if(OnlyOnPlayer) return;
-		
-		switch (ScaleForceWithMagnitude)
-		{
-			case true:
-				other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce * other.relativeVelocity.magnitude, ForceMode2D.Impulse);
-				break;
-				
-			case false:
-				other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce, ForceMode2D.Impulse);
-				break;
-		}
-	}
+        if (!IsCoolingDown)
+        {
+            switch (ScaleForceWithMagnitude)
+            {
+                case true:
+                    other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce * other.relativeVelocity.magnitude, ForceMode2D.Impulse);
+                    break;
+
+                case false:
+                    other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce, ForceMode2D.Impulse);
+                    break;
+            }
+        }
+
+        IsCoolingDown = true;
+    }
 }

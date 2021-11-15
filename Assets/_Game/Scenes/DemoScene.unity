@@ -130,9 +130,73 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2955481856912353950, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 2.040332
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481856912353950, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 0.000021979205
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481857001317524, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 2.1043332
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481857001317524, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 0.00053870684
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481857230257007, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 2.1296673
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481857230257007, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 0.00000017881389
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481858351295547, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 1.7731339
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481858351295547, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 0.16001065
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481858453812175, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 2.211317
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481858453812175, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 0.06447666
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481858511436750, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 1.7048439
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955481858511436750, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.0018138879
+      objectReference: {fileID: 0}
+    - target: {fileID: 4109077694990271181, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.6635989
+      objectReference: {fileID: 0}
+    - target: {fileID: 4109077694990271181, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.74808854
+      objectReference: {fileID: 0}
     - target: {fileID: 4743495943104267932, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
       propertyPath: m_Name
       value: UnicycleGuy
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864104343032548788, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6139631
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864104343032548788, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7893347
       objectReference: {fileID: 0}
     - target: {fileID: 5985954535557324894, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
       propertyPath: m_RootOrder
@@ -193,7 +257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917548, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: ExplosionForce
-      value: 1500
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917551, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_RootOrder
@@ -1075,7 +1139,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917548, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: ExplosionForce
-      value: 1500
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917551, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_RootOrder
@@ -1144,7 +1208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917548, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: ExplosionForce
-      value: 1500
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917551, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_RootOrder
@@ -1322,6 +1386,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sea_Mine
       objectReference: {fileID: 0}
+    - target: {fileID: 8500799316463917548, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
+      propertyPath: ExplosionForce
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917551, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1375,6 +1443,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1758450114, guid: 46d7f6b5fa3ca7f45a88c34003fcc0bd, type: 3}
+      propertyPath: AddedForce
+      value: 1189.16
+      objectReference: {fileID: 0}
     - target: {fileID: 6892204331704683509, guid: 46d7f6b5fa3ca7f45a88c34003fcc0bd, type: 3}
       propertyPath: m_Name
       value: Spike_Base_Circle
@@ -1422,6 +1494,10 @@ PrefabInstance:
     - target: {fileID: 6892204331704683511, guid: 46d7f6b5fa3ca7f45a88c34003fcc0bd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8403329076452606024, guid: 46d7f6b5fa3ca7f45a88c34003fcc0bd, type: 3}
+      propertyPath: Force
+      value: 45.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46d7f6b5fa3ca7f45a88c34003fcc0bd, type: 3}
@@ -1549,7 +1625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917548, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: ExplosionForce
-      value: 1500
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917551, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_RootOrder
@@ -1729,7 +1805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917548, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: ExplosionForce
-      value: 1500
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917551, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_RootOrder
@@ -1795,6 +1871,10 @@ PrefabInstance:
     - target: {fileID: 8500799316463917547, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_Name
       value: Sea_Mine (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500799316463917548, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
+      propertyPath: ExplosionForce
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917551, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_RootOrder
