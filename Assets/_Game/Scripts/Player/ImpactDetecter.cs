@@ -27,7 +27,7 @@ public class ImpactDetecter : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log(other.relativeVelocity.magnitude);
+        Debug.Log(other.relativeVelocity.magnitude + " name : " + this.gameObject.name);
 
         if (other.relativeVelocity.magnitude > PlayerRagdoll.CollisionForceToRagDoll)
         {

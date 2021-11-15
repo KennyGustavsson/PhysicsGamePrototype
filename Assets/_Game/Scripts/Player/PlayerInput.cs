@@ -3,12 +3,14 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
 	private Unicycle Unicycle;
+	private Ragdoll Ragdoll;
 	private TimeManager TimeManager;
 
 	private void Awake()
 	{
 		Unicycle = GetComponent<Unicycle>();
 		TimeManager = GetComponent<TimeManager>();
+		Ragdoll = transform.root.GetComponentInChildren<Ragdoll>();
 	}
 
 	private void Update()
@@ -19,6 +21,7 @@ public class PlayerInput : MonoBehaviour
 		Unicycle.LeanRight = Input.GetKey(KeyCode.A);
 		Unicycle.Crouching = Input.GetKey(KeyCode.LeftControl);
 		TimeManager.RewindTimeInput = Input.GetKey(KeyCode.R);
+		Ragdoll.IsRewinding = Input.GetKey(KeyCode.R);
 
 		if(Input.GetKeyDown(KeyCode.Space)) KeySpace();
 		if(Input.GetKeyDown(KeyCode.LeftShift)) Unicycle.Stop = true;
