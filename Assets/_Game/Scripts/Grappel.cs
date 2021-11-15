@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Grappel : MonoBehaviour
 {
-    public bool DoFuckingThing = true;
+    [FormerlySerializedAs("DoFuckingThing")] public bool Magic = true;
     private CapsuleCollider2D Collider2D;
     private Rigidbody2D Body;
     
@@ -30,6 +32,8 @@ public class Grappel : MonoBehaviour
     public LayerMask WallLayer;
     public bool RopeAttach = false;
 
+
+    
     void Awake()
     {
         _LineRenderer = GetComponent<LineRenderer>();
@@ -61,6 +65,10 @@ public class Grappel : MonoBehaviour
         _LineRenderer.enabled = false;
         _LineRenderer.positionCount = 0;
     }
+    
+
+
+
 
     void Update()
     {
@@ -121,7 +129,7 @@ public class Grappel : MonoBehaviour
     {
         Collider2D.enabled = true;
 
-        if (DoFuckingThing)
+        if (Magic)
         {
             OldParent = wheel.transform.root.gameObject;
             wheel.transform.SetParent(gameObject.transform);
@@ -184,7 +192,7 @@ public class Grappel : MonoBehaviour
     {
         Collider2D.enabled = false;
 
-        if (DoFuckingThing)
+        if (Magic)
         {
             Rigidbody2D WheelBody = wheel.GetComponent<Rigidbody2D>();
             if (WheelBody != null)
