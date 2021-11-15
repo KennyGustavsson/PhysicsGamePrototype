@@ -7,6 +7,7 @@ public class ImpactDetecter : MonoBehaviour
     private float rateOverTime;
     private float inheritedVelocityMultiplier;
     [SerializeField] private float bloodVelocityMultiplier = 0.01f;
+    [SerializeField] private bool isRagdollImpact;
 
     private void Awake()
     {
@@ -17,8 +18,11 @@ public class ImpactDetecter : MonoBehaviour
 
     private void Update()
     {
-        transform.position = transform.parent.position;
-        transform.rotation = transform.parent.rotation;
+        if (!isRagdollImpact)
+        {
+            transform.position = transform.parent.position;
+            transform.rotation = transform.parent.rotation;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -27,14 +31,7 @@ public class ImpactDetecter : MonoBehaviour
 
         if (other.relativeVelocity.magnitude > PlayerRagdoll.CollisionForceToRagDoll)
         {
-            var emission = particleSystem.emission;
-            emission.rateOverTime = rateOverTime * other.relativeVelocity.magnitude;
-
-            var inheritedVelocity = particleSystem.inheritVelocity;
-            inheritedVelocity.curveMultiplier = inheritedVelocityMultiplier * other.relativeVelocity.magnitude * bloodVelocityMultiplier;
-
-            particleSystem.Play();
-            PlayerRagdoll.ToggleRagdoll(true);
+            Collision(other.relativeVelocity.magnitude);
         }
     }
 
@@ -47,6 +44,10 @@ public class ImpactDetecter : MonoBehaviour
         inheritedVelocity.curveMultiplier = inheritedVelocityMultiplier * collisionForce * bloodVelocityMultiplier;
 
         particleSystem.Play();
-        PlayerRagdoll.ToggleRagdoll(true);
+
+        if (!PlayerRagdoll.RagdollActive)
+        {
+            PlayerRagdoll.ToggleRagdoll(true);
+        }
     }
 }
