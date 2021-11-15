@@ -59,8 +59,8 @@ public class Grappel : MonoBehaviour
             Collider2D = gameObject.AddComponent<CapsuleCollider2D>();
         }
 
-        //Collider2D.size = new Vector2(3.71f, 12f);
-        //Collider2D.enabled = false;
+        Collider2D.size = new Vector2(3.71f, 12f);
+        Collider2D.enabled = false;
         _DistanceJoint.enabled = false;
         _LineRenderer.enabled = false;
         _LineRenderer.positionCount = 0;
