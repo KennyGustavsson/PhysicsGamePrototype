@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Grappel : MonoBehaviour
 {
+    public bool DoFuckingThing = true;
     private CapsuleCollider2D Collider2D;
     private Rigidbody2D Body;
     
@@ -54,10 +55,11 @@ public class Grappel : MonoBehaviour
             Collider2D = gameObject.AddComponent<CapsuleCollider2D>();
         }
 
-        Collider2D.size = new Vector2(3.71f, 12f);
-        Collider2D.enabled = false;
+        //Collider2D.size = new Vector2(3.71f, 12f);
+        //Collider2D.enabled = false;
         _DistanceJoint.enabled = false;
         _LineRenderer.enabled = false;
+        _LineRenderer.positionCount = 0;
     }
 
     void Update()
@@ -93,6 +95,7 @@ public class Grappel : MonoBehaviour
         {
             if (RopeAttach)
             {
+                Destroy(HookProjectile);
                 DetachRope(); 
             }
             else
@@ -104,8 +107,8 @@ public class Grappel : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            Destroy(HookProjectile);
-            DetachRope();
+            
+            //DetachRope();
         }
         
         if (Input.GetKeyUp(KeyCode.P))
@@ -117,11 +120,16 @@ public class Grappel : MonoBehaviour
     public void AttachRope(Vector2 HitPos)
     {
         Collider2D.enabled = true;
+
+        if (DoFuckingThing)
+        {
+            OldParent = wheel.transform.root.gameObject;
+            wheel.transform.SetParent(gameObject.transform);
+            Rigidbody2D WheelBody = wheel.GetComponent<Rigidbody2D>();
+            WheelBody.simulated = false;
+        }
         
-        OldParent = wheel.transform.root.gameObject;
-        wheel.transform.SetParent(gameObject.transform);
-        Rigidbody2D WheelBody = wheel.GetComponent<Rigidbody2D>();
-        WheelBody.simulated = false;
+
         //--------------------------//
         RopePoints.Add(PlayerPos);
         RopePoints.Add(HitPos);
@@ -138,7 +146,11 @@ public class Grappel : MonoBehaviour
     
     void UpdateAnchor(Vector2 HitPos)
     {
-        RopePoints.Add(HitPos);
+        if (!RopePoints.Contains(HitPos))
+        {
+            RopePoints.Add(HitPos);
+        }
+
         AnchorPoint = RopePoints[RopePoints.Count - 1];
 
         RopeAttach = true;
@@ -171,23 +183,26 @@ public class Grappel : MonoBehaviour
     public void DetachRope()
     {
         Collider2D.enabled = false;
-        
-        Rigidbody2D WheelBody = wheel.GetComponent<Rigidbody2D>();
-        if (WheelBody != null)
+
+        if (DoFuckingThing)
         {
-            print(WheelBody);
-            WheelBody.simulated = true;
-            if (Body != null)
+            Rigidbody2D WheelBody = wheel.GetComponent<Rigidbody2D>();
+            if (WheelBody != null)
             {
-                WheelBody.velocity = Body.velocity;
+                print(WheelBody);
+                WheelBody.simulated = true;
+                if (Body != null)
+                {
+                    WheelBody.velocity = Body.velocity;
+                }
+                else
+                {
+                    print("body is null");
+                }
             }
-            else
-            {
-                print("body is null");
-            }
+            wheel.transform.SetParent(OldParent.transform);  
         }
-        wheel.transform.SetParent(OldParent.transform);
-        
+
         RopePoints.Clear();
         RopeAttach = false;
         _DistanceJoint.enabled = RopeAttach;
@@ -203,18 +218,25 @@ public class Grappel : MonoBehaviour
         }
         
         _LineRenderer.enabled = true;
-        _LineRenderer.positionCount = RopePoints.Count - 1;
+        int Count = _LineRenderer.positionCount = RopePoints.Count - 1;
         
         RopePoints[0] = PlayerPos;
-            
-        int RopeCount = RopePoints.Count - 1;
-            
-        for (int i = 0; i < RopeCount; i++)
+
+        for (int i = 1; i < Count ; i++)
         {
-            print("index = " + i + " RopePoints.Count = " + (RopeCount - i));
+            print("index = " + i + " RopePoints.Count = " + (_LineRenderer.positionCount) + " [RopeCount - i] = " + (Count - i));
+            
+            _LineRenderer.SetPosition(0,RopePoints[0]);
+            
+            _LineRenderer.SetPosition(i,RopePoints[Count - i]);
+        }
+        /*
+        for (int i = _LineRenderer.positionCount; i > 0; i--)
+        {
+            //print("index = " + i + " RopePoints.Count = " + (_LineRenderer.positionCount) + "RopePoints[RopeCount - i] = " + RopePoints[_LineRenderer.positionCount - i]);
                 
-            _LineRenderer.SetPosition(i,RopePoints[RopeCount - i]);
-        } 
+            _LineRenderer.SetPosition(i,RopePoints[i]);
+        } */
     }
 
     private void OnDrawGizmos()
@@ -264,6 +286,16 @@ public class Grappel : MonoBehaviour
             }
             
         }
+    }
+
+    Vector2 SetRope(int RopeIndex)
+    {
+        if ((RopeIndex - 1) != -1 )
+        {
+            
+        }
+        
+        return Vector2.zero;
     }
     
     List<Vector2> ReverseList(List<Vector2> ToReverse)
