@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PistonMovement : MonoBehaviour
@@ -12,7 +11,7 @@ public class PistonMovement : MonoBehaviour
     private float timer = 0;
 
     private WaitForSeconds Wait;
-    
+
     private void Awake()
     {
         pistonTopRB = GetComponentInChildren<Rigidbody2D>();
@@ -42,7 +41,7 @@ public class PistonMovement : MonoBehaviour
     private IEnumerator Push()
     {        
         distanceJoint.enabled = true;
-        pistonTopRB.AddForce(Vector2.down * force, ForceMode2D.Impulse);
+        pistonTopRB.AddForce(Vector2.up * force, ForceMode2D.Impulse);
         yield return Wait;
         distanceJoint.enabled = false;
     }
