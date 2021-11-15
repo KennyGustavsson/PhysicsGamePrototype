@@ -78,6 +78,12 @@ public class TimeManager : MonoBehaviour
 					    Platform.IsRewindingTime = false;
 			    }
 			    
+			    foreach (var DistanceJoint in TimeRewindDistanceJoint)
+			    {
+				    if (DistanceJoint)
+					    DistanceJoint.IsRewindingTime = false;
+			    }
+			    
 			    if(TimeRewindUnicycle)
 				    TimeRewindUnicycle.IsRewindingTime = false;
 				    
@@ -124,6 +130,12 @@ public class TimeManager : MonoBehaviour
 	    {
 		    Platform.IsRewindingTime = true;
 		    Platform.RewindTime();
+	    }
+
+	    foreach (var DistanceJoint in TimeRewindDistanceJoint)
+	    {
+		    DistanceJoint.IsRewindingTime = true;
+		    DistanceJoint.RewindTime();
 	    }
 	    
 	    if (TimeRewindUnicycle)
