@@ -16,7 +16,7 @@ public class TimeManager : MonoBehaviour
     [NonSerialized] public TimeRewindUnicycle TimeRewindUnicycle;
     [NonSerialized] public TimeRewindRagdoll TimeRewindRagdoll;
 
-    private int FrameCounter = 0;
+	[NonSerialized] public int FrameCounter = 0;
     
     public bool RewindingTime = false;
     public bool RewindTimeInput = false;
