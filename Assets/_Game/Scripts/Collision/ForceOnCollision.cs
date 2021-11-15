@@ -54,6 +54,9 @@ public class ForceOnCollision : MonoBehaviour
                 if (other.relativeVelocity.magnitude > KillMagnitude)
                 {
                     Ragdoll rd = other.transform.root.GetComponentInChildren<Ragdoll>();
+                    
+                    if(rd.IsRewinding) return;
+                    
                     if (!rd.RagdollActive)
                     {
                         rd.ToggleRagdoll(true);

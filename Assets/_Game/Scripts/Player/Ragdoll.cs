@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.U2D.IK;
 
@@ -20,6 +21,7 @@ public class Ragdoll : MonoBehaviour
     [SerializeField] private Rigidbody2D[] rigidbodies;
 
     public bool RagdollActive = false;
+    [NonSerialized] public bool IsRewinding = false;
 
     private void Awake()
     {
