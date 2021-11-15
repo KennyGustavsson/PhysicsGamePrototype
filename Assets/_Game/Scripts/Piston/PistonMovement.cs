@@ -11,10 +11,13 @@ public class PistonMovement : MonoBehaviour
     [SerializeField] private bool startActive = false;
     private float timer = 0;
 
+    private WaitForSeconds Wait;
+    
     private void Awake()
     {
         pistonTopRB = GetComponentInChildren<Rigidbody2D>();
         distanceJoint = GetComponentInChildren<DistanceJoint2D>();
+        Wait = new WaitForSeconds(1f);
     }
 
     private void Start()
@@ -40,7 +43,7 @@ public class PistonMovement : MonoBehaviour
     {        
         distanceJoint.enabled = true;
         pistonTopRB.AddForce(Vector2.down * force, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(1f);
+        yield return Wait;
         distanceJoint.enabled = false;
     }
 }
