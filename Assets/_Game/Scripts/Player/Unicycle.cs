@@ -9,8 +9,18 @@ public class Unicycle : MonoBehaviour
     [SerializeField] private float JumpForce = 600.0f;
     [SerializeField] private float MaxAngularVelocity = 360.0f;
     [SerializeField] private GameObject CharacterObject;
+    [SerializeField] private GameObject AvatarObject;
+    [SerializeField] private GameObject Spine2Object;
+    
+    [Header("Leaning")]
     [SerializeField] private float LeanDegrees = 40.0f;
     [SerializeField] private float LeanSpeed = 1.0f;
+
+    [Header("Crouching")] 
+    [SerializeField] private float CrouchAmount = -1.0f;
+    [SerializeField] private float CrouchSpeed = 0.2f;
+    [SerializeField] private float CrouchLeanDegrees = 20.0f;
+    [SerializeField] private float CrouchSpineLeanDegrees = -50.0f;
     
     [Header("GroundCheck")]
     [SerializeField] private float GroundRayCastLength = 2;
@@ -20,22 +30,30 @@ public class Unicycle : MonoBehaviour
     [NonSerialized] public bool RagDolling = false;
     [NonSerialized] public bool OnGround = false;
 
-    private float Accumulator = 0.0f;
+    private float LeaningAccumulator = 0.0f;
     private Quaternion StartRotation = Quaternion.identity;
     private bool LeaningRight = false;
     private bool LeaningLeft = false;
 
+    private float CrouchingAccumulator = 0.0f;
+    private float StartYPos = 0.0f;
+    private bool LeaningCrouch = false;
 
-#region Inputs
+    #region Inputs
     [NonSerialized] public bool Jump;
     [NonSerialized] public bool Left;
     [NonSerialized] public bool Right;
     [NonSerialized] public bool Stop;
     [NonSerialized] public bool LeanLeft;
     [NonSerialized] public bool LeanRight;
+    [NonSerialized] public bool Crouching;
 #endregion
 
-    private void Awake() => rb = GetComponent<Rigidbody2D>();
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        StartYPos = AvatarObject.transform.localPosition.y;
+    }
 
     private void Update()
     {
@@ -72,11 +90,47 @@ public class Unicycle : MonoBehaviour
         }
         
         Leaning();
+        Crouch();
     }
 
+    void Crouch()
+    {
+        if (Crouching)
+        {
+            CrouchingAccumulator = Mathf.Clamp(CrouchingAccumulator + Time.deltaTime / CrouchSpeed, 0, 1);
+        }
+        else
+        {
+            CrouchingAccumulator = Mathf.Clamp(CrouchingAccumulator - Time.deltaTime / CrouchSpeed, 0, 1);
+        }
+
+        // Position
+        float NewY = Mathf.Lerp(0, CrouchAmount, CrouchingAccumulator);
+        AvatarObject.transform.localPosition = new Vector3(0, StartYPos + NewY, 0);
+        
+        // Spine Rotation
+        Quaternion TargetRotation = Quaternion.Euler(new Vector3(0, 0, CrouchSpineLeanDegrees));
+        Quaternion NewRotation = Quaternion.Slerp(Quaternion.identity, TargetRotation, CrouchingAccumulator);
+        Spine2Object.transform.localRotation = NewRotation;
+    }
+    
     void Leaning()
     {
         float Target = 0.0f;
+
+        if (Crouching)
+        {
+            Target -= CrouchLeanDegrees;
+            
+            
+            if(!LeaningCrouch) ResetAccumulator();
+            LeaningCrouch = true;
+        }
+        else
+        {
+            if(!LeaningCrouch) ResetAccumulator();
+            LeaningCrouch = false;
+        }
         
         if (LeanRight)
         {
@@ -104,16 +158,15 @@ public class Unicycle : MonoBehaviour
             LeaningLeft = false;
         }
 
-        Accumulator = Mathf.Clamp(Accumulator + Time.deltaTime / LeanSpeed, 0, 1);
+        LeaningAccumulator = Mathf.Clamp(LeaningAccumulator + Time.deltaTime / LeanSpeed, 0, 1);
         Quaternion TargetRotation = Quaternion.Euler(new Vector3(0, 0, Target));
-        Quaternion NewRotation = Quaternion.Slerp(StartRotation, TargetRotation, Accumulator);
-        
+        Quaternion NewRotation = Quaternion.Slerp(StartRotation, TargetRotation, LeaningAccumulator);
         CharacterObject.transform.localRotation = NewRotation;
     }
 
     private void ResetAccumulator()
     {
-        Accumulator = 0.0f;
+        LeaningAccumulator = 0.0f;
         StartRotation = CharacterObject.transform.localRotation;
     }
 }

@@ -17,6 +17,7 @@ public class PlayerInput : MonoBehaviour
 		Unicycle.Right = Input.GetKey(KeyCode.D);
 		Unicycle.LeanLeft = Input.GetKey(KeyCode.D);
 		Unicycle.LeanRight = Input.GetKey(KeyCode.A);
+		Unicycle.Crouching = Input.GetKey(KeyCode.LeftControl);
 		TimeManager.RewindTimeInput = Input.GetKey(KeyCode.R);
 
 		if(Input.GetKeyDown(KeyCode.Space)) KeySpace();
