@@ -5,8 +5,12 @@ public class ForceOnCollision : MonoBehaviour
 	[Header("Options")]
 	[SerializeField] private float AddedForce = 50.0f;
 	[SerializeField] private float KillMagnitude = 1.0f;
+    [SerializeField] private float EffectingRadius = 1.0f;
 	[SerializeField] private bool ScaleForceWithMagnitude = true;
 	[SerializeField] private bool OnlyOnPlayer = true;
+
+    [Header("Debugging")] 
+    [SerializeField] private bool ShowEffectingRadius = false;
 
 	private float ForceApplyCooldown = 1f;
 	private float Timer = 0.0f;
@@ -30,6 +34,14 @@ public class ForceOnCollision : MonoBehaviour
 		Timer += Time.deltaTime;
     }
 
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {   
+        if(ShowEffectingRadius)
+            Gizmos.DrawSphere(transform.position, EffectingRadius);
+    }
+#endif
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (!other.rigidbody) return;
@@ -62,11 +74,11 @@ public class ForceOnCollision : MonoBehaviour
                     switch (ScaleForceWithMagnitude)
                     {
                         case true:
-                            other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce * other.relativeVelocity.magnitude, ForceMode2D.Impulse);
+                            AddForceScaledMagnitude(other);
                             break;
 
                         case false:
-                            other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce, ForceMode2D.Impulse);
+                            AddForce(other);
                             break;
                     }                    
                 }
@@ -84,15 +96,57 @@ public class ForceOnCollision : MonoBehaviour
             switch (ScaleForceWithMagnitude)
             {
                 case true:
-                    other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce * other.relativeVelocity.magnitude, ForceMode2D.Impulse);
+                    AddForceScaledMagnitude(other);
                     break;
 
                 case false:
-                    other.rigidbody.AddForce(Rigidbody.velocity.normalized * AddedForce, ForceMode2D.Impulse);
+                    AddForce(other);
                     break;
             }
         }
 
         IsCoolingDown = true;
+    }
+
+    private void AddForceScaledMagnitude(Collision2D other)
+    {
+        var Hits = Physics2D.CircleCastAll(other.GetContact(0).point, EffectingRadius, Vector2.up);
+
+        foreach (var Hit in Hits)
+        {
+            if (Hit.transform.gameObject != this)
+            {
+                Rigidbody2D rb = Hit.rigidbody;
+
+                if (rb)
+                {
+                    rb.AddForceAtPosition(Vector2.one * EffectingRadius, other.GetContact(0).point);
+
+                    Vector2 Direction = (Hit.point - other.GetContact(0).point).normalized;
+                    rb.AddForce(Rigidbody.velocity.normalized * AddedForce * other.relativeVelocity.magnitude, ForceMode2D.Impulse); 
+                }   
+            }
+        }
+    }
+
+    private void AddForce(Collision2D other)
+    {
+        var Hits = Physics2D.CircleCastAll(other.GetContact(0).point, EffectingRadius, Vector2.up);
+
+        foreach (var Hit in Hits)
+        {
+            if (Hit.transform.gameObject != this)
+            {
+                Rigidbody2D rb = Hit.rigidbody;
+
+                if (rb)
+                {
+                    rb.AddForceAtPosition(Vector2.one * EffectingRadius, other.GetContact(0).point);
+
+                    Vector2 Direction = (Hit.point - other.GetContact(0).point).normalized;
+                    rb.AddForce(Rigidbody.velocity.normalized * AddedForce, ForceMode2D.Impulse); 
+                }   
+            }
+        }
     }
 }
