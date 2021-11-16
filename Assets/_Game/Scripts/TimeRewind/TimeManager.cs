@@ -66,7 +66,7 @@ public class TimeManager : MonoBehaviour
 		    DeathFrameCounter = 0;
 	    }
 	    
-	    PermaDead = DeathFrameCounter >= MaxRewindFrames;
+	    PermaDead = DeathFrameCounter > MaxRewindFrames;
     }
     
     private void SaveData()
