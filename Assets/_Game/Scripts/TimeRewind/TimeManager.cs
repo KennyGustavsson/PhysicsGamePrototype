@@ -16,8 +16,11 @@ public class TimeManager : MonoBehaviour
 	[NonSerialized] public List<TimeRewindPlatform> TimeRewindPlatforms = new List<TimeRewindPlatform>();
     [NonSerialized] public TimeRewindUnicycle TimeRewindUnicycle;
     [NonSerialized] public TimeRewindRagdoll TimeRewindRagdoll;
+    private Ragdoll Ragdoll;
 
 	[NonSerialized] public int FrameCounter = 0;
+	[NonSerialized] public int DeathFrameCounter = 0;
+	[NonSerialized] public bool PermaDead = false;
     
     public bool RewindingTime = false;
     public bool RewindTimeInput = false;
@@ -27,10 +30,14 @@ public class TimeManager : MonoBehaviour
     {
 	    if (Instance) Destroy(this);
 	    else Instance = this;
+
+	    Ragdoll = transform.root.GetComponentInChildren<Ragdoll>();
     }
 
     private void FixedUpdate()
     {
+	    DeathCheck();
+	    
 	    if(TimeRewinds.Count == 0) return;
 
 	    if (RewindTimeInput && FrameCounter > 0) RewindingTime = true;
@@ -48,6 +55,20 @@ public class TimeManager : MonoBehaviour
 	    RewindingBoolSet = false;
     }
 
+    private void DeathCheck()
+    {
+	    if (Ragdoll.RagdollActive)
+	    {
+		    DeathFrameCounter++;
+	    }
+	    else
+	    {
+		    DeathFrameCounter = 0;
+	    }
+	    
+	    PermaDead = DeathFrameCounter >= MaxRewindFrames;
+    }
+    
     private void SaveData()
     {
 	    foreach (var RewindObject in TimeRewinds)
