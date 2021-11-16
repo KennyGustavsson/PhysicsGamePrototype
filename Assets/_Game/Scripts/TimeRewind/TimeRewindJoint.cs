@@ -30,7 +30,7 @@ public class TimeRewindJoint : MonoBehaviour
 		Manager.TimeRewindJoints.Remove(this);
 	}
 	
-	private void FixedUpdate()
+	public void SaveRewind()
 	{
 		// Time rewinding
 		if (IsRewindingTime)

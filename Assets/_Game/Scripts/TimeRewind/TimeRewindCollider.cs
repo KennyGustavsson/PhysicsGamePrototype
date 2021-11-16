@@ -30,7 +30,7 @@ public class TimeRewindCollider : MonoBehaviour
 		Manager.TimeRewindColliders.Remove(this);
 	}
 	
-	private void FixedUpdate()
+	public void SaveRewind()
 	{
 		// Time rewinding
 		if (IsRewindingTime)

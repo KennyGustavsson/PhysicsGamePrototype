@@ -32,7 +32,7 @@ public class TimeRewindTrans : MonoBehaviour
         Manager.TimeRewindTranses.Remove(this);
     }
 
-    private void FixedUpdate()
+    public void SaveRewind()
     {
         // Time rewinding
         if (IsRewindingTime)

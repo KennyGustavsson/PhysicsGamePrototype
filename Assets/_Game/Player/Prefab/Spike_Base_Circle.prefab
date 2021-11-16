@@ -566,10 +566,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6778199a90ee4442aa7234a3d8fc25e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddedForce: 50
+  AddedForce: 20
   KillMagnitude: 2
+  EffectingRadius: 1
   ScaleForceWithMagnitude: 1
   OnlyOnPlayer: 1
+  ShowEffectingRadius: 0
 --- !u!114 &8403329076452606024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,7 +585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerInterval: 2
-  Force: 45.2
+  Force: 20
   ChangeDirection: 1
   UseLocalDirection: 1
 --- !u!1 &6892204332387352997

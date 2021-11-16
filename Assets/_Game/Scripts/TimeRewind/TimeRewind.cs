@@ -36,7 +36,7 @@ public class TimeRewind : MonoBehaviour
         Manager.TimeRewinds.Remove(this);
     }
 
-    private void FixedUpdate()
+    public void SaveRewind()
     {
         // Time rewinding
         if (IsRewindingTime)

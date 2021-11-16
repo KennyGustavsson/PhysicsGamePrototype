@@ -10,7 +10,7 @@ public class TimeRewindRagdoll : MonoBehaviour
 	private TimeManager Manager;
 	
 	#region TimeData
-	private struct RewindTimeData
+	public struct RewindTimeData
 	{
 		public float LimbSolverWeight0;
 		public float LimbSolverWeight1;
@@ -23,7 +23,7 @@ public class TimeRewindRagdoll : MonoBehaviour
 		public bool WheelJointEnabled;
 	}
     
-	private List<RewindTimeData> RewindList = new List<RewindTimeData>();
+	public List<RewindTimeData> RewindList = new List<RewindTimeData>();
 	#endregion
 
 	private void Awake() => Ragdoll = GetComponent<Ragdoll>();
@@ -39,7 +39,7 @@ public class TimeRewindRagdoll : MonoBehaviour
 		Manager.TimeRewindRagdoll = null;
 	}
 	
-	private void FixedUpdate()
+	public void SaveRewind()
 	{
 		// Time rewinding
 		if (IsRewindingTime)
