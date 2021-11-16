@@ -8,14 +8,14 @@ public class TimeRewindUnicycle : MonoBehaviour
 	[NonSerialized] public bool IsRewindingTime = false;
 	private Unicycle Unicycle;
 	private TimeManager Manager;
-	
-#region TimeData
-	private struct RewindTimeData
+
+    #region TimeData
+    private struct RewindTimeData
 	{
 		public bool OnGround;
 	}
     
-	private List<RewindTimeData> RewindList = new List<RewindTimeData>();
+	[NonSerialized] private List<RewindTimeData> RewindList = new List<RewindTimeData>();
 #endregion
 
 	private void Awake() => Unicycle = GetComponent<Unicycle>();

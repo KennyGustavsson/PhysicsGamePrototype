@@ -16,11 +16,13 @@ public class TimeManager : MonoBehaviour
 	[NonSerialized] public List<TimeRewindPlatform> TimeRewindPlatforms = new List<TimeRewindPlatform>();
     [NonSerialized] public TimeRewindUnicycle TimeRewindUnicycle;
     [NonSerialized] public TimeRewindRagdoll TimeRewindRagdoll;
+	public event Action PermaDeadEvent;
     private Ragdoll Ragdoll;
 
 	[NonSerialized] public int FrameCounter = 0;
-	[NonSerialized] public int DeathFrameCounter = 0;
-	[NonSerialized] public bool PermaDead = false;
+	public int DeathFrameCounter = 0;
+	public bool PermaDead = false;
+	private bool DeathEventTriggered = false;
     
     public bool RewindingTime = false;
     public bool RewindTimeInput = false;
@@ -57,18 +59,16 @@ public class TimeManager : MonoBehaviour
 
     private void DeathCheck()
     {
-	    if (Ragdoll.RagdollActive)
-	    {
-		    DeathFrameCounter++;
-	    }
-	    else
-	    {
-		    DeathFrameCounter = 0;
-	    }
-	    
-	    PermaDead = DeathFrameCounter > MaxRewindFrames;
+        if (TimeRewindRagdoll.RewindList.Count > 0)
+        {
+            if (TimeRewindRagdoll.RewindList[0].RagdollActive && !DeathEventTriggered)
+            {
+                PermaDeadEvent?.Invoke();
+                DeathEventTriggered = true;
+            }
+        }
     }
-    
+
     private void SaveData()
     {
 	    foreach (var RewindObject in TimeRewinds)
@@ -133,8 +133,7 @@ public class TimeManager : MonoBehaviour
 			    TimeRewindRagdoll.IsRewindingTime = false;
 		    
 		    TimeRewindUnicycle.SaveRewind();
-	    }
-		    
+	    }		    
 
 	    if (TimeRewindRagdoll)
 	    {

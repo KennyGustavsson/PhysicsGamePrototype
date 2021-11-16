@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class PlayerUI : MonoBehaviour
 {
     private TimeManager timeManager;
-    private Ragdoll playerRagdoll;
     private Canvas playerUICanvas;
     [SerializeField] private Slider timeRewindSlider;
     [SerializeField] private GameObject deathPanel;
@@ -13,7 +12,6 @@ public class PlayerUI : MonoBehaviour
     private void Awake()
     {
         timeManager = FindObjectOfType<TimeManager>();
-        playerRagdoll = FindObjectOfType<Ragdoll>();
         playerUICanvas = GetComponent<Canvas>();
 
         timeRewindSlider.maxValue = timeManager.MaxRewindFrames;
@@ -21,15 +19,21 @@ public class PlayerUI : MonoBehaviour
         if (playerUICanvas.worldCamera == null) playerUICanvas.worldCamera = Camera.main;
     }
 
-    //private void Update()
-    //{
-    //    timeRewindSlider.value = timeManager.FrameCounter;
 
-    //    if (timeManager.FrameCounter == 0 && playerRagdoll.RagdollActive)
-    //    {
-    //        ToggleUI();
-    //    }
-    //}
+    private void OnEnable()
+    {
+        timeManager.PermaDeadEvent += ToggleUI;
+    }
+
+    private void OnDisable()
+    {
+        timeManager.PermaDeadEvent -= ToggleUI;
+    }
+
+    private void Update()
+    {
+        timeRewindSlider.value = timeManager.FrameCounter;        
+    }
 
     private void ToggleUI()
     {
