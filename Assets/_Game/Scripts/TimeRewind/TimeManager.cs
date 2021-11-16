@@ -14,6 +14,7 @@ public class TimeManager : MonoBehaviour
     [NonSerialized] public List<TimeRewindParticle> TimeRewindParticles = new List<TimeRewindParticle>();
 	[NonSerialized] public List<TimeRewindDistanceJoint> TimeRewindDistanceJoint = new List<TimeRewindDistanceJoint>();
 	[NonSerialized] public List<TimeRewindPlatform> TimeRewindPlatforms = new List<TimeRewindPlatform>();
+	[NonSerialized] public List<TimeRewindPiston> TimeRewindPistons = new List<TimeRewindPiston>();
     [NonSerialized] public TimeRewindUnicycle TimeRewindUnicycle;
     [NonSerialized] public TimeRewindRagdoll TimeRewindRagdoll;
 	public event Action PermaDeadEvent;
@@ -128,6 +129,14 @@ public class TimeManager : MonoBehaviour
 		    DistanceJoint.SaveRewind();
 	    }
 
+	    foreach (var Piston in TimeRewindPistons)
+	    {
+		    if (!RewindingBoolSet)
+			    Piston.IsRewindingTime = false;
+		    
+		    Piston.SaveRewind();
+	    }
+
 	    if (TimeRewindUnicycle)
 	    {
 		    if (!RewindingBoolSet)
@@ -192,6 +201,12 @@ public class TimeManager : MonoBehaviour
 		    {
 			    DistanceJoint.IsRewindingTime = true;
 			    DistanceJoint.RewindTime();
+		    }
+
+		    foreach (var Piston in TimeRewindPistons)
+		    {
+			    Piston.IsRewindingTime = true;
+			    Piston.RewindTime();
 		    }
 	    
 		    if (TimeRewindUnicycle)

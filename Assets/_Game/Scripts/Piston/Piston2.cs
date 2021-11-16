@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Piston2 : MonoBehaviour
@@ -18,10 +19,10 @@ public class Piston2 : MonoBehaviour
     [Header("Debugging")] 
     [SerializeField] private bool ShowEffectingRadius = false;
     
-    private float Accumulator = 0.0f;
-    private float Timer = 0.0f;
+    [NonSerialized] public float Accumulator = 0.0f;
+    [NonSerialized] public float Timer = 0.0f;
     private float StartY = 0.0f;
-    private bool isGoingUp = true;
+    [NonSerialized] public bool isGoingUp = true;
 
     private void Awake()
     {
