@@ -10,6 +10,7 @@ public class Unicycle : MonoBehaviour
     [SerializeField] private GameObject CharacterObject;
     [SerializeField] private GameObject AvatarObject;
     [SerializeField] private GameObject Spine2Object;
+    [SerializeField] private float AirControl = 1.0f;
     
     [Header("Leaning")]
     [SerializeField] private float LeanDegrees = 40.0f;
@@ -72,12 +73,18 @@ public class Unicycle : MonoBehaviour
         {
             rb.angularVelocity -= Speed * Time.deltaTime;
             rb.angularVelocity = Mathf.Clamp(rb.angularVelocity, -MaxAngularVelocity, MaxAngularVelocity);
+            
+            if(!OnGround)
+                rb.AddForce(new Vector2(AirControl, 0), ForceMode2D.Force);
         }
 
         if (Left)
         {
             rb.angularVelocity += Speed * Time.deltaTime;
             rb.angularVelocity = Mathf.Clamp(rb.angularVelocity, -MaxAngularVelocity, MaxAngularVelocity);
+            
+            if(!OnGround)
+                rb.AddForce(new Vector2(-AirControl, 0), ForceMode2D.Force);
         }
 
         if (Stop)
