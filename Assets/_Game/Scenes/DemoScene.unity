@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2955481856908055182, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4743495943104267932, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
       propertyPath: m_Name
       value: UnicycleGuy
@@ -177,6 +181,10 @@ PrefabInstance:
     - target: {fileID: 5985954535557324894, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7964443277078824602, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
+      propertyPath: RewindTimeMultiplier
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43123f48b558d424aa72f70da051de9d, type: 3}
@@ -1259,11 +1267,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917551, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 58
+      value: -11.3
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917551, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 58.6
+      value: 69.3
       objectReference: {fileID: 0}
     - target: {fileID: 8500799316463917551, guid: 0c8e609959d261c458ab7f792d985ade, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1721,18 +1729,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1068314533, guid: 5966e8752c213df4ea6c4499c97f504b, type: 3}
-      propertyPath: m_Text
-      value: Quit
-      objectReference: {fileID: 0}
-    - target: {fileID: 1068314533, guid: 5966e8752c213df4ea6c4499c97f504b, type: 3}
-      propertyPath: m_FontData.m_BestFit
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1537679972, guid: 5966e8752c213df4ea6c4499c97f504b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8705685130059852449, guid: 5966e8752c213df4ea6c4499c97f504b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
