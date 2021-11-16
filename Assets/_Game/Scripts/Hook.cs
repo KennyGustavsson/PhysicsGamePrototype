@@ -12,17 +12,14 @@ public class Hook : MonoBehaviour
     {
         print("Collision" + other.transform.gameObject.name);
 
-        if (other.transform.gameObject.layer == (1<<parent.WallLayer))
+        if (!parent.RopeAttach)
         {
-            if (!parent.RopeAttach)
-            {
-                parent.AttachRope(other.contacts[0].point);    
-            }
-            else
-            {
-                parent.DetachRope();
-                parent.AttachRope(other.contacts[0].point);    
-            }
+            parent.AttachRope(other.contacts[0].point);    
+        }
+        else
+        {
+            parent.DetachRope();
+            parent.AttachRope(other.contacts[0].point);    
         }
         
         Destroy(gameObject);

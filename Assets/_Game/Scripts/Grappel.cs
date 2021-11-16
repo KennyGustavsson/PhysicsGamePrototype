@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -24,7 +25,7 @@ public class Grappel : MonoBehaviour
     private Vector2 AnchorPoint = Vector2.zero;
     private Vector2 PlayerPos = Vector2.zero;
     private Vector2 CrossHair = Vector2.zero;
-    public List<Vector2> RopePoints;
+    public List<Vector3> RopePoints;
     
     public float MoveForce = 10f;
     public float ProjectilelaunceStrength = 100f;
@@ -157,6 +158,8 @@ public class Grappel : MonoBehaviour
         if (!RopePoints.Contains(HitPos))
         {
             RopePoints.Add(HitPos);
+
+            //RopePoints.Reverse();
         }
 
         AnchorPoint = RopePoints[RopePoints.Count - 1];
@@ -201,7 +204,9 @@ public class Grappel : MonoBehaviour
                 WheelBody.simulated = true;
                 if (Body != null)
                 {
-                    WheelBody.velocity = Body.velocity;
+                    WheelBody.velocity = Vector2.zero;
+                    WheelBody.angularVelocity = 0;
+                    WheelBody.AddForce((Body.velocity.normalized + Vector2.up) * 400, ForceMode2D.Impulse);
                 }
                 else
                 {
@@ -226,25 +231,27 @@ public class Grappel : MonoBehaviour
         }
         
         _LineRenderer.enabled = true;
-        int Count = _LineRenderer.positionCount = RopePoints.Count - 1;
+        int Count = _LineRenderer.positionCount = RopePoints.Count;
         
         RopePoints[0] = PlayerPos;
 
-        for (int i = 1; i < Count ; i++)
+        List<Vector3> ReverstArray = RopePoints;
+        
+        for (int i = 0; i < Count ; i++)
         {
             print("index = " + i + " RopePoints.Count = " + (_LineRenderer.positionCount) + " [RopeCount - i] = " + (Count - i));
             
-            _LineRenderer.SetPosition(0,RopePoints[0]);
+            Vector3 anchor = RopePoints[RopePoints.Count - 1];
+            Vector3 player = RopePoints[0];
             
-            _LineRenderer.SetPosition(i,RopePoints[Count - i]);
+            ReverstArray.RemoveAt(RopePoints.Count - 1);
+            ReverstArray.RemoveAt(0);
+            ReverstArray.Add(anchor);
+            ReverstArray.Add(player);
+            
+            //_LineRenderer.SetPositions(ReverstArray.ToArray());
+            _LineRenderer.SetPosition(i,ReverstArray[i]);
         }
-        /*
-        for (int i = _LineRenderer.positionCount; i > 0; i--)
-        {
-            //print("index = " + i + " RopePoints.Count = " + (_LineRenderer.positionCount) + "RopePoints[RopeCount - i] = " + RopePoints[_LineRenderer.positionCount - i]);
-                
-            _LineRenderer.SetPosition(i,RopePoints[i]);
-        } */
     }
 
     private void OnDrawGizmos()
