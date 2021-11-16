@@ -39,8 +39,8 @@ public class Unicycle : MonoBehaviour
     private float CrouchingAccumulator = 0.0f;
     private float StartYPos = 0.0f;
     private bool LeaningCrouch = false;
-
-    #region Inputs
+    
+#region Inputs
     [NonSerialized] public bool Jump;
     [NonSerialized] public bool Left;
     [NonSerialized] public bool Right;

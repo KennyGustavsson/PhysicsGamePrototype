@@ -65,6 +65,7 @@ public class TimeManager : MonoBehaviour
             {
                 PermaDeadEvent?.Invoke();
                 DeathEventTriggered = true;
+                PermaDead = true;
             }
         }
     }

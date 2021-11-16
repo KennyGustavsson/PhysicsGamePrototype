@@ -15,6 +15,8 @@ public class PlayerInput : MonoBehaviour
 
 	private void Update()
 	{
+		if(TimeManager.Instance.PermaDead) return;
+		
 		Unicycle.Left = Input.GetKey(KeyCode.A);
 		Unicycle.Right = Input.GetKey(KeyCode.D);
 		Unicycle.LeanLeft = Input.GetKey(KeyCode.D);
