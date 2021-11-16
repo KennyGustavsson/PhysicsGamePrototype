@@ -10,7 +10,7 @@ public class Unicycle : MonoBehaviour
     [SerializeField] private GameObject CharacterObject;
     [SerializeField] private GameObject AvatarObject;
     [SerializeField] private GameObject Spine2Object;
-    [SerializeField] private float AirControl = 1.0f;
+    [SerializeField] private float AirControl = 250.0f;
     
     [Header("Leaning")]
     [SerializeField] private float LeanDegrees = 40.0f;
