@@ -1,30 +1,25 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class Grappel : MonoBehaviour
 {
     [FormerlySerializedAs("DoFuckingThing")] public bool Magic = true;
-    private CapsuleCollider2D Collider2D;
-    private Rigidbody2D Body;
+    [HideInInspector] public CapsuleCollider2D Collider2D;
+    [HideInInspector] public Rigidbody2D Body;
     
     public GameObject OldParent;
     public GameObject wheel;
     public GameObject ProjectileType;
-    private GameObject HookProjectile;
+    public Hook HookProjectile;
     
     private Camera mainCamera;
-    private LineRenderer _LineRenderer;
-    private DistanceJoint2D _DistanceJoint;
+    [HideInInspector] public LineRenderer _LineRenderer;
+    [HideInInspector] public DistanceJoint2D _DistanceJoint;
 
-    private Vector2 AnchorPoint = Vector2.zero;
-    private Vector2 PlayerPos = Vector2.zero;
-    private Vector2 CrossHair = Vector2.zero;
+    [HideInInspector] public Vector2 AnchorPoint = Vector2.zero;
+    [HideInInspector] public Vector2 PlayerPos = Vector2.zero;
+    [HideInInspector] public Vector2 CrossHair = Vector2.zero;
     public List<Vector3> RopePoints;
     
     public float MoveForce = 10f;
@@ -32,8 +27,6 @@ public class Grappel : MonoBehaviour
 
     public LayerMask WallLayer;
     public bool RopeAttach = false;
-
-
     
     void Awake()
     {
@@ -65,11 +58,9 @@ public class Grappel : MonoBehaviour
         _DistanceJoint.enabled = false;
         _LineRenderer.enabled = false;
         _LineRenderer.positionCount = 0;
+
+
     }
-    
-
-
-
 
     void Update()
     {
@@ -104,20 +95,22 @@ public class Grappel : MonoBehaviour
         {
             if (RopeAttach)
             {
-                Destroy(HookProjectile);
+                HookProjectile.IsActive = false;
                 DetachRope(); 
             }
             else
             {
-                HookProjectile = Instantiate(ProjectileType, PlayerPos, Quaternion.identity);
-                HookProjectile.GetComponent<Rigidbody2D>().AddForce(rayDirection * ProjectilelaunceStrength, ForceMode2D.Impulse );
-                HookProjectile.GetComponent<Hook>().parent = this;
+                if (HookProjectile == null)
+                {
+                    var proj = Instantiate(ProjectileType);
+                    HookProjectile = proj.GetComponent<Hook>();
+                    HookProjectile.SpawnHook(PlayerPos,rayDirection * ProjectilelaunceStrength, this);
+                }
+                else
+                {
+                    HookProjectile.SpawnHook(PlayerPos,rayDirection * ProjectilelaunceStrength, this); 
+                }
             }
-        }
-        else if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            
-            //DetachRope();
         }
         
         if (Input.GetKeyUp(KeyCode.P))
@@ -234,24 +227,24 @@ public class Grappel : MonoBehaviour
         int Count = _LineRenderer.positionCount = RopePoints.Count;
         
         RopePoints[0] = PlayerPos;
-
-        List<Vector3> ReverstArray = RopePoints;
         
         for (int i = 0; i < Count ; i++)
         {
             print("index = " + i + " RopePoints.Count = " + (_LineRenderer.positionCount) + " [RopeCount - i] = " + (Count - i));
-            
-            Vector3 anchor = RopePoints[RopePoints.Count - 1];
-            Vector3 player = RopePoints[0];
-            
-            ReverstArray.RemoveAt(RopePoints.Count - 1);
-            ReverstArray.RemoveAt(0);
-            ReverstArray.Add(anchor);
-            ReverstArray.Add(player);
-            
-            //_LineRenderer.SetPositions(ReverstArray.ToArray());
-            _LineRenderer.SetPosition(i,ReverstArray[i]);
         }
+
+        List<Vector3> points = new List<Vector3>();
+
+        foreach (var point in RopePoints)
+        {
+            points.Add(point);
+        }
+        
+        Vector3 player = points[0];
+        points.RemoveAt(0);
+        points.Add(player);
+
+        _LineRenderer.SetPositions(points.ToArray());
     }
 
     private void OnDrawGizmos()

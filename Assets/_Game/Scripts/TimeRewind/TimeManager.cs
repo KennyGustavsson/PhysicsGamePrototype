@@ -15,7 +15,9 @@ public class TimeManager : MonoBehaviour
 	[NonSerialized] public List<TimeRewindDistanceJoint> TimeRewindDistanceJoint = new List<TimeRewindDistanceJoint>();
 	[NonSerialized] public List<TimeRewindPlatform> TimeRewindPlatforms = new List<TimeRewindPlatform>();
 	[NonSerialized] public List<TimeRewindPiston> TimeRewindPistons = new List<TimeRewindPiston>();
-    [NonSerialized] public TimeRewindUnicycle TimeRewindUnicycle;
+	[NonSerialized] public List<TimeRewindRopeProjectile> TimeRewindRopeProjectiles = new List<TimeRewindRopeProjectile>();
+	[NonSerialized] public List<TimeRewindRope> TimeRewindRopes = new List<TimeRewindRope>();
+	[NonSerialized] public TimeRewindUnicycle TimeRewindUnicycle;
     [NonSerialized] public TimeRewindRagdoll TimeRewindRagdoll;
 	public event Action PermaDeadEvent;
     private Ragdoll Ragdoll;
@@ -136,6 +138,25 @@ public class TimeManager : MonoBehaviour
 		    
 		    Piston.SaveRewind();
 	    }
+	    
+	    foreach (var projectile in TimeRewindRopeProjectiles)
+	    {
+		    if (!RewindingBoolSet)
+			    projectile.IsRewindingTime = false;
+		    
+		    projectile.SaveRewind();
+	    }
+	    
+	    foreach (var rope in TimeRewindRopes)
+	    {
+		    if (!RewindingBoolSet)
+			    rope.IsRewindingTime = false;
+		    
+		    rope.SaveRewind();
+	    }
+	    
+	    
+	    
 
 	    if (TimeRewindUnicycle)
 	    {
@@ -207,6 +228,18 @@ public class TimeManager : MonoBehaviour
 		    {
 			    Piston.IsRewindingTime = true;
 			    Piston.RewindTime();
+		    }
+		    
+		    foreach (var projectile in TimeRewindRopeProjectiles)
+		    {
+			    projectile.IsRewindingTime = true;
+			    projectile.RewindTime();
+		    }
+		    
+		    foreach (var rope in TimeRewindRopes)
+		    {
+			    rope.IsRewindingTime = true;
+			    rope.RewindTime();
 		    }
 	    
 		    if (TimeRewindUnicycle)
