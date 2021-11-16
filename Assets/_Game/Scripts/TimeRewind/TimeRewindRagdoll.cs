@@ -39,7 +39,7 @@ public class TimeRewindRagdoll : MonoBehaviour
 		Manager.TimeRewindRagdoll = null;
 	}
 	
-	private void FixedUpdate()
+	public void SaveRewind()
 	{
 		// Time rewinding
 		if (IsRewindingTime)

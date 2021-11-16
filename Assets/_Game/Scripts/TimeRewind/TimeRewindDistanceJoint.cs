@@ -24,7 +24,7 @@ public class TimeRewindDistanceJoint : MonoBehaviour
         Manager.TimeRewindDistanceJoint.Add(this);
     }
     
-    private void FixedUpdate()
+    public void SaveRewind()
     {
         // Time rewinding
         if (IsRewindingTime)

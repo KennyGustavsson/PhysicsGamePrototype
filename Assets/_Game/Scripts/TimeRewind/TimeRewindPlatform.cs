@@ -42,7 +42,7 @@ public class TimeRewindPlatform : MonoBehaviour
         Manager.TimeRewindPlatforms.Remove(this);
     }
 
-    private void FixedUpdate()
+    public void SaveRewind()
     {
         // Time rewinding
         if (IsRewindingTime)

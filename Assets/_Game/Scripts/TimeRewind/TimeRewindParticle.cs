@@ -31,7 +31,7 @@ public class TimeRewindParticle : MonoBehaviour
 		Manager.TimeRewindParticles.Remove(this);
 	}
 	
-	private void FixedUpdate()
+	public void SaveRewind()
     {
         // Time rewinding
         if (IsRewindingTime)

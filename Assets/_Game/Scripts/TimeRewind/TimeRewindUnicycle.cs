@@ -13,7 +13,6 @@ public class TimeRewindUnicycle : MonoBehaviour
 	private struct RewindTimeData
 	{
 		public bool OnGround;
-		public bool RagDolling;
 	}
     
 	private List<RewindTimeData> RewindList = new List<RewindTimeData>();
@@ -32,7 +31,7 @@ public class TimeRewindUnicycle : MonoBehaviour
 		Manager.TimeRewindUnicycle = null;
 	}
 	
-	private void FixedUpdate()
+	public void SaveRewind()
     {
         // Time rewinding
         if (IsRewindingTime)
@@ -45,7 +44,6 @@ public class TimeRewindUnicycle : MonoBehaviour
 
         // Save data
         TimeData.OnGround = Unicycle.OnGround;
-        TimeData.RagDolling = Unicycle.RagDolling;
 
         // Add time data to list
         RewindList.Add(TimeData);
@@ -69,7 +67,6 @@ public class TimeRewindUnicycle : MonoBehaviour
 
         // Unicycle data
         Unicycle.OnGround = TimeData.OnGround;
-        Unicycle.RagDolling = TimeData.RagDolling;
 
         // Remove Last
         RewindList.RemoveAt(RewindList.Count - 1);

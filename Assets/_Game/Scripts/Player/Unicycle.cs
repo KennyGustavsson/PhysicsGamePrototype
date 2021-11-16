@@ -1,5 +1,4 @@
 using System;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Unicycle : MonoBehaviour
@@ -27,6 +26,7 @@ public class Unicycle : MonoBehaviour
     [SerializeField] private int LayerMask = 7;
     
     private Rigidbody2D rb;
+    private Ragdoll Ragdoll;
     [NonSerialized] public bool RagDolling = false;
     [NonSerialized] public bool OnGround = false;
 
@@ -53,6 +53,8 @@ public class Unicycle : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         StartYPos = AvatarObject.transform.localPosition.y;
+
+        Ragdoll = transform.root.GetComponentInChildren<Ragdoll>();
     }
 
     private void Update()
@@ -63,6 +65,7 @@ public class Unicycle : MonoBehaviour
 
     private void FixedUpdate()
     {
+        RagDolling = Ragdoll.RagdollActive;
         if(RagDolling) return;
         
         if (Right)

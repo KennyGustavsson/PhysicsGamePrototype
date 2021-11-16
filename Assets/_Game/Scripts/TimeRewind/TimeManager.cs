@@ -6,6 +6,7 @@ public class TimeManager : MonoBehaviour
 {
 	public static TimeManager Instance;
     public int MaxRewindFrames = 200;
+    public int RewindTimeMultiplier = 2;
     [NonSerialized] public List<TimeRewind> TimeRewinds = new List<TimeRewind>();
     [NonSerialized] public List<TimeRewindJoint> TimeRewindJoints = new List<TimeRewindJoint>();
     [NonSerialized] public List<TimeRewindCollider> TimeRewindColliders = new List<TimeRewindCollider>();
@@ -37,121 +38,154 @@ public class TimeManager : MonoBehaviour
 
 	    if (!RewindingTime)
 	    {
-		    FrameCounter = Mathf.Clamp(FrameCounter + 1, 0, MaxRewindFrames);
-		    
-		    if (!RewindingBoolSet)
-		    {
-			    // Set rewind objects rewind bool
-			    foreach (var RewindObject in TimeRewinds)
-			    {
-				    if(RewindObject)
-						RewindObject.IsRewindingTime = false;
-			    }
-
-			    foreach (var Joint in TimeRewindJoints)
-			    {
-				    if (Joint)
-					    Joint.IsRewindingTime = false;
-			    }
-
-			    foreach (var Collider in TimeRewindColliders)
-			    {
-				    if (Collider)
-					    Collider.IsRewindingTime = false;
-			    }
-			    
-			    foreach (var Trans in TimeRewindTranses)
-			    {
-				    if (Trans)
-					    Trans.IsRewindingTime = false;
-			    }
-
-			    foreach (var ParticleSystem in TimeRewindParticles)
-			    {
-				    if (ParticleSystem)
-					    ParticleSystem.IsRewindingTime = false;
-			    }
-			    
-			    foreach (var Platform in TimeRewindPlatforms)
-			    {
-				    if (Platform)
-					    Platform.IsRewindingTime = false;
-			    }
-			    
-			    foreach (var DistanceJoint in TimeRewindDistanceJoint)
-			    {
-				    if (DistanceJoint)
-					    DistanceJoint.IsRewindingTime = false;
-			    }
-			    
-			    if(TimeRewindUnicycle)
-				    TimeRewindUnicycle.IsRewindingTime = false;
-				    
-			    if(TimeRewindRagdoll) 
-				    TimeRewindRagdoll.IsRewindingTime = false;
-		    }
-
+		    SaveData();
 		    RewindingBoolSet = true;
+		    
 		    return;
 	    }
-	    
-	    // Rewind time
+
+	    RewindTime();
+	    RewindingBoolSet = false;
+    }
+
+    private void SaveData()
+    {
 	    foreach (var RewindObject in TimeRewinds)
 	    {
-		    RewindObject.IsRewindingTime = true;
-		    RewindObject.RewindTime();
+		    if (!RewindingBoolSet)
+			    RewindObject.IsRewindingTime = false;
+		    
+		    RewindObject.SaveRewind();
 	    }
 
 	    foreach (var Joint in TimeRewindJoints)
 	    {
-		    Joint.IsRewindingTime = true;
-		    Joint.RewindTime();
+		    if (!RewindingBoolSet)
+			    Joint.IsRewindingTime = false;
+		    
+		    Joint.SaveRewind();
 	    }
 
 	    foreach (var Collider in TimeRewindColliders)
 	    {
-		    Collider.IsRewindingTime = true;
-		    Collider.RewindTime();
+		    if (!RewindingBoolSet)
+			    Collider.IsRewindingTime = false;
+		    
+		    Collider.SaveRewind();
 	    }
-	    
+			    
 	    foreach (var Trans in TimeRewindTranses)
 	    {
-		    Trans.IsRewindingTime = true;
-		    Trans.RewindTime();
-	    }
-	    
-	    foreach (var ParticleSystem in TimeRewindParticles)
-	    {
-		    ParticleSystem.IsRewindingTime = true;
-		    ParticleSystem.RewindTime();
-	    }
-	    
-	    foreach (var Platform in TimeRewindPlatforms)
-	    {
-		    Platform.IsRewindingTime = true;
-		    Platform.RewindTime();
+		    if (!RewindingBoolSet)
+			    Trans.IsRewindingTime = false;
+		    
+		    Trans.SaveRewind();
 	    }
 
+	    foreach (var ParticleSystem in TimeRewindParticles)
+	    {
+		    if (!RewindingBoolSet)
+			    ParticleSystem.IsRewindingTime = false;
+		    
+		    ParticleSystem.SaveRewind();
+	    }
+			    
+	    foreach (var Platform in TimeRewindPlatforms)
+	    {
+		    if (!RewindingBoolSet)
+			    Platform.IsRewindingTime = false;
+		    
+		    Platform.SaveRewind();
+	    }
+			    
 	    foreach (var DistanceJoint in TimeRewindDistanceJoint)
 	    {
-		    DistanceJoint.IsRewindingTime = true;
-		    DistanceJoint.RewindTime();
+		    if (!RewindingBoolSet)
+			    DistanceJoint.IsRewindingTime = false;
+		    
+		    DistanceJoint.SaveRewind();
 	    }
-	    
+
 	    if (TimeRewindUnicycle)
 	    {
-		    TimeRewindUnicycle.IsRewindingTime = true;
-		    TimeRewindUnicycle.RewindTime();
+		    if (!RewindingBoolSet)
+			    TimeRewindRagdoll.IsRewindingTime = false;
+		    
+		    TimeRewindUnicycle.SaveRewind();
 	    }
+		    
 
 	    if (TimeRewindRagdoll)
 	    {
-		    TimeRewindRagdoll.IsRewindingTime = true;
-		    TimeRewindRagdoll.RewindTime();
+		    if (!RewindingBoolSet)
+			    TimeRewindRagdoll.IsRewindingTime = false;
+		    
+		    TimeRewindRagdoll.SaveRewind();
 	    }
 
-	    RewindingBoolSet = false;
+	    FrameCounter = Mathf.Clamp(FrameCounter + 1, 0, MaxRewindFrames);
+    }
+
+    private void RewindTime()
+    {
+	    for (int i = 0; i < RewindTimeMultiplier; i++)
+	    {
+		    // Rewind time
+		    foreach (var RewindObject in TimeRewinds)
+		    {
+			    RewindObject.IsRewindingTime = true;
+			    RewindObject.RewindTime();
+		    }
+
+		    foreach (var Joint in TimeRewindJoints)
+		    {
+			    Joint.IsRewindingTime = true;
+			    Joint.RewindTime();
+		    }
+
+		    foreach (var Collider in TimeRewindColliders)
+		    {
+			    Collider.IsRewindingTime = true;
+			    Collider.RewindTime();
+		    }
 	    
-	    FrameCounter = Mathf.Clamp(FrameCounter - 1, 0, MaxRewindFrames);
+		    foreach (var Trans in TimeRewindTranses)
+		    {
+			    Trans.IsRewindingTime = true;
+			    Trans.RewindTime();
+		    }
+	    
+		    foreach (var ParticleSystem in TimeRewindParticles)
+		    {
+			    ParticleSystem.IsRewindingTime = true;
+			    ParticleSystem.RewindTime();
+		    }
+	    
+		    foreach (var Platform in TimeRewindPlatforms)
+		    {
+			    Platform.IsRewindingTime = true;
+			    Platform.RewindTime();
+		    }
+
+		    foreach (var DistanceJoint in TimeRewindDistanceJoint)
+		    {
+			    DistanceJoint.IsRewindingTime = true;
+			    DistanceJoint.RewindTime();
+		    }
+	    
+		    if (TimeRewindUnicycle)
+		    {
+			    TimeRewindUnicycle.IsRewindingTime = true;
+			    TimeRewindUnicycle.RewindTime();
+		    }
+
+		    if (TimeRewindRagdoll)
+		    {
+			    TimeRewindRagdoll.IsRewindingTime = true;
+			    TimeRewindRagdoll.RewindTime();
+		    }
+	    
+		    FrameCounter = Mathf.Clamp(FrameCounter - 1, 0, MaxRewindFrames);   
+	    }
     }
 }
