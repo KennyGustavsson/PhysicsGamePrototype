@@ -104,7 +104,7 @@ public class TimeRewindRope : MonoBehaviour
 
         //  positions data
         _grappel.PlayerPos = TimeData.PlayerPos;
-        _grappel.AnchorPoint = TimeData.AnchorPoint; 
+        _grappel._DistanceJoint.connectedAnchor = TimeData.AnchorPoint; 
         _grappel.RopePoints = TimeData.RopePoints;
         //  distanceJoint
         _grappel._DistanceJoint.distance = TimeData.distanceJointDistance;
