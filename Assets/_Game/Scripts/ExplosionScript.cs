@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ExplosionScript : MonoBehaviour
@@ -10,7 +11,36 @@ public class ExplosionScript : MonoBehaviour
     [SerializeField] private float ExplosionForce = 100.0f;
     [SerializeField] private float BleedingEffectMultiplier = 0.33f;
 
-    private void OnCollisionEnter2D(Collision2D other)
+    [Header("Debugging")]
+    [SerializeField] private bool VisualizeExplosionSphere = true;
+    [SerializeField] private int CircleResolution = 32;
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+	    if (VisualizeExplosionSphere)
+	    {
+		    Vector3[] points = new Vector3[CircleResolution];
+		    float DeltaTheta = 6.28318530718f / CircleResolution;
+		    float Theta = 0.0f;
+
+		    Vector2 Pos = transform.position;
+		    
+		    for (int i = 0; i < CircleResolution; i++)
+		    {
+				points[i] = new Vector3(Pos.x + (ExplosionRadius * Mathf.Cos(Theta)), Pos.y + (ExplosionRadius * Mathf.Sin(Theta)));
+				Theta += DeltaTheta;
+		    }
+
+		    for (int i = 0; i < CircleResolution; i++)
+		    {
+			    Gizmos.DrawLine(points[i], i == CircleResolution - 1 ? points[0] : points[i + 1]);
+		    }
+	    }
+    }
+#endif
+
+	private void OnCollisionEnter2D(Collision2D other)
     {
 	    // Rag dolling
 	    if (other.transform.gameObject.layer == 6 || other.transform.gameObject.layer == 7)
