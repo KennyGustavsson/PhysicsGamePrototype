@@ -16,8 +16,13 @@ TagManager:
   - Unicycle
   - Grappel
   - Hook
-  - Fireball
+    PhysicsHazard
+    Fireball
   - SeaMine
+    
+    
+  - 
+  - 
   - 
   - 
   - 
