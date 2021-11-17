@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8500799316463917549}
   - component: {fileID: 8500799316463917548}
   m_Layer: 0
-  m_Name: Sea_Mine
+  m_Name: Sea_Mine_Static
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,13 +126,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Explosion: {fileID: 100000, guid: fb1312d91b8716042b1151f9b514fc16, type: 3}
   ExplosionRadius: 10
-<<<<<<< Updated upstream:Assets/_Game/Player/Prefab/Sea_Mine.prefab
-  ExplosionForce: 1500
-  BleedingEffectMultiplier: 0.33
-=======
   ExplosionForce: 50
-  BleedingEffectMultiplier: 100
-  OnlyOnPlayer: 0
-  VisualizeExplosionSphere: 1
-  CircleResolution: 32
->>>>>>> Stashed changes:Assets/_Game/Player/Prefab/Sea_Mine_Static.prefab
+  BleedingEffectMultiplier: 0.33
