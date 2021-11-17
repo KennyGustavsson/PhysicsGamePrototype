@@ -6,6 +6,7 @@ public class ForceOnCollision : MonoBehaviour
 	[SerializeField] private float AddedForce = 50.0f;
 	[SerializeField] private float KillMagnitude = 1.0f;
     [SerializeField] private float EffectingRadius = 1.0f;
+    [SerializeField] private float NonVelocityBloodValue = 30f;
 	[SerializeField] private bool ScaleForceWithMagnitude = true;
 	[SerializeField] private bool OnlyOnPlayer = true;
 
@@ -65,9 +66,20 @@ public class ForceOnCollision : MonoBehaviour
                     if (other.transform.gameObject.layer == 6)
                     {
                         var impactComponents = other.transform.root.GetComponentsInChildren<ImpactDetecter>();
-                        foreach (var impactComps in impactComponents)
+                        
+                        if (Rigidbody)
                         {
-                            impactComps.Collision(Rigidbody.velocity.magnitude);
+                            foreach (var impactComps in impactComponents)
+                            {
+                                impactComps.Collision(Rigidbody.velocity.magnitude);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var impactComps in impactComponents)
+                            {
+                                impactComps.Collision(NonVelocityBloodValue);
+                            }
                         }
                     }
                 }

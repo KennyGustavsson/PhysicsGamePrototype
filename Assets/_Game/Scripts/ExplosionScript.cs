@@ -51,7 +51,7 @@ public class ExplosionScript : MonoBehaviour
 				rd.ToggleRagdoll(true);
 			}
 
-			if (other.transform.gameObject.layer == 6)
+			if (other.transform.gameObject.layer == 6 || other.transform.gameObject.layer == 7)
 			{
 				var impactComponents = other.transform.root.GetComponentsInChildren<ImpactDetecter>();
 				foreach (var impactComps in impactComponents)
