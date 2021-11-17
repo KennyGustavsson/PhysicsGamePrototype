@@ -10,10 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8500799316463917551}
   - component: {fileID: 8500799316463917550}
-  - component: {fileID: 8500799316463917549}
   - component: {fileID: 8500799316463917548}
+  - component: {fileID: 2579425250312754401}
+  - component: {fileID: 7656011133953432574}
+  - component: {fileID: 7917116511387081307}
   m_Layer: 0
-  m_Name: Sea_Mine
+  m_Name: Sea_Mine_Bouncy
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8500799316463917547}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.19, y: 1.49, z: 0}
-  m_LocalScale: {x: 0.43372503, y: 0.43372503, z: 0}
+  m_LocalScale: {x: 1.9364954, y: 1.9364954, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -86,32 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &8500799316463917549
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8500799316463917547}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8, y: 7.8}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 7, y: 7}
-  m_EdgeRadius: 0
 --- !u!114 &8500799316463917548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,13 +102,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Explosion: {fileID: 100000, guid: fb1312d91b8716042b1151f9b514fc16, type: 3}
   ExplosionRadius: 10
-<<<<<<< Updated upstream:Assets/_Game/Player/Prefab/Sea_Mine.prefab
-  ExplosionForce: 1500
-  BleedingEffectMultiplier: 0.33
-=======
-  ExplosionForce: 50
+  ExplosionForce: 500
   BleedingEffectMultiplier: 100
-  OnlyOnPlayer: 0
+  OnlyOnPlayer: 1
   VisualizeExplosionSphere: 1
   CircleResolution: 32
->>>>>>> Stashed changes:Assets/_Game/Player/Prefab/Sea_Mine_Static.prefab
+--- !u!58 &2579425250312754401
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500799316463917547}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 4
+--- !u!50 &7656011133953432574
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500799316463917547}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 3
+  m_Material: {fileID: 6200000, guid: 90a2edc48cee5b5458bc408f1a974e0f, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &7917116511387081307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500799316463917547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32d32bdd9a50b2143b9fb9a020a7ca31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
