@@ -116,7 +116,7 @@ public class TimeRewindRope : MonoBehaviour
         //  collider
         collider2D.enabled = TimeData.collider2D;
         //  Parent
-        //_grappel.wheel.transform.SetParent(TimeData.wheelParent.transform);
+        _grappel.wheel.transform.SetParent(TimeData.wheelParent.transform);
         
         // Remove Last
         RewindList.RemoveAt(RewindList.Count - 1);

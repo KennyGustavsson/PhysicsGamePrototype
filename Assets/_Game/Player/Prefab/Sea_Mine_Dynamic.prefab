@@ -103,8 +103,8 @@ MonoBehaviour:
   Explosion: {fileID: 100000, guid: fb1312d91b8716042b1151f9b514fc16, type: 3}
   ExplosionRadius: 10
   ExplosionForce: 150
-  BleedingEffectMultiplier: 0.33
-  OnlyOnPlayer: 1
+  BleedingEffectMultiplier: 100
+  OnlyOnPlayer: 0
   VisualizeExplosionSphere: 1
   CircleResolution: 32
 --- !u!58 &2579425250312754401
@@ -139,7 +139,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 3
-  m_Material: {fileID: 6200000, guid: 90a2edc48cee5b5458bc408f1a974e0f, type: 2}
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0

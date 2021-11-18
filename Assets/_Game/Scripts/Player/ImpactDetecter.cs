@@ -9,6 +9,10 @@ public class ImpactDetecter : MonoBehaviour
     [SerializeField] private float bloodVelocityMultiplier = 0.01f;
     [SerializeField] private bool isRagdollImpact;
 
+    [Header("Debugging")]
+    [SerializeField] private bool PrintOwnNameOnCollision;
+    [SerializeField] private bool PrintOtherNameOnCollision;
+
     private void Awake()
     {
         particleSystem = GetComponentInChildren<ParticleSystem>();
@@ -27,7 +31,8 @@ public class ImpactDetecter : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log(other.relativeVelocity.magnitude + " name : " + this.gameObject.name);
+        if (PrintOwnNameOnCollision) Debug.Log(other.relativeVelocity.magnitude + " My name : " + this.gameObject.name);
+        if (PrintOtherNameOnCollision) Debug.Log(other.relativeVelocity.magnitude + " Other name : " + other.gameObject.name);
 
         if (other.relativeVelocity.magnitude > PlayerRagdoll.CollisionForceToRagDoll)
         {
