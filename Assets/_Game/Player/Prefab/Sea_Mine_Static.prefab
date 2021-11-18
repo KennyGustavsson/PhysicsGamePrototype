@@ -127,4 +127,6 @@ MonoBehaviour:
   Explosion: {fileID: 100000, guid: fb1312d91b8716042b1151f9b514fc16, type: 3}
   ExplosionRadius: 10
   ExplosionForce: 50
-  BleedingEffectMultiplier: 0.33
+  BleedingEffectMultiplier: 100
+  VisualizeExplosionSphere: 1
+  CircleResolution: 32
