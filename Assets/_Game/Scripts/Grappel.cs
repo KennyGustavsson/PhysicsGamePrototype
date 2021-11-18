@@ -11,7 +11,7 @@ public class Grappel : MonoBehaviour
     public GameObject OldParent;
     public GameObject wheel;
     public GameObject ProjectileType;
-    public Hook HookProjectile;
+    [HideInInspector] public Hook HookProjectile;
     
     private Camera mainCamera;
     [HideInInspector] public LineRenderer _LineRenderer;
@@ -20,6 +20,10 @@ public class Grappel : MonoBehaviour
     [HideInInspector] public Vector2 AnchorPoint = Vector2.zero;
     [HideInInspector] public Vector2 PlayerPos = Vector2.zero;
     [HideInInspector] public Vector2 CrossHair = Vector2.zero;
+    
+    [HideInInspector] public int PlayerIndex;
+    [HideInInspector] public int AnchorIndex;
+    
     public List<Vector3> RopePoints;
     
     public float MoveForce = 10f;
@@ -32,8 +36,10 @@ public class Grappel : MonoBehaviour
     public bool RopeAttach = false;
     
     //RealIn
-    public float current, target, speed;
-    public bool RealIn;
+    public float speed = 0.01f;
+    private float current = 0;
+    private float  target = 1;
+    private bool RealIn;
     
     void Awake()
     {
@@ -116,6 +122,8 @@ public class Grappel : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            //RopePoints.Clear();
+            
             if (RopeAttach)
             {
                 HookProjectile.IsActive = false;
@@ -123,15 +131,17 @@ public class Grappel : MonoBehaviour
             }
             else
             {
+                Vector2 dirStrength = rayDirection * ProjectilelaunceStrength;
+
                 if (HookProjectile == null)
                 {
                     var proj = Instantiate(ProjectileType);
                     HookProjectile = proj.GetComponent<Hook>();
-                    HookProjectile.SpawnHook(PlayerPos,rayDirection * ProjectilelaunceStrength, this);
+                    HookProjectile.SpawnHook(PlayerPos,Body.velocity + dirStrength, this);
                 }
                 else
                 {
-                    HookProjectile.SpawnHook(PlayerPos,rayDirection * ProjectilelaunceStrength, this); 
+                    HookProjectile.SpawnHook(PlayerPos,Body.velocity + dirStrength, this); 
                 }
             }
         }
@@ -199,7 +209,9 @@ public class Grappel : MonoBehaviour
                 {
                     WheelBody.velocity = Vector2.zero;
                     WheelBody.angularVelocity = 0;
-                    WheelBody.AddForce((Body.velocity.normalized * jumpForwardStrength) + (Vector2.up * jumpUpStrength), ForceMode2D.Impulse);
+                    Vector2 wheelVelocity = (Body.velocity.normalized * jumpForwardStrength) +
+                                            (Vector2.up * jumpUpStrength);
+                    WheelBody.AddForce(wheelVelocity, ForceMode2D.Impulse);
                 }
                 else
                 {
