@@ -25,7 +25,7 @@ public class Grappel : MonoBehaviour
     public float MoveForce = 10f;
     public float ProjectilelaunceStrength = 100f;
     public float jumpStrength = 400f;
-    public float realInStrength = 10;
+    public float realInStrength = 0f;
 
     public LayerMask WallLayer;
     public bool RopeAttach = false;
@@ -55,6 +55,7 @@ public class Grappel : MonoBehaviour
             Collider2D = gameObject.AddComponent<CapsuleCollider2D>();
         }
 
+        Collider2D.offset = new Vector2(0f, 5.7f);
         Collider2D.size = new Vector2(3.71f, 12f);
         Collider2D.enabled = false;
         _DistanceJoint.enabled = false;
@@ -86,9 +87,9 @@ public class Grappel : MonoBehaviour
             if (Input.GetKey(KeyCode.Space))
             {
                 print(_DistanceJoint.distance);
-
-                Vector3 moddelPos = Vector3.Lerp(AnchorPoint, PlayerPos, realInStrength * Time.deltaTime);
-                
+                realInStrength += Time.deltaTime;
+                Vector3 middelPos = Vector3.Lerp(AnchorPoint, PlayerPos,  realInStrength);
+                transform.position = middelPos;
                 //_DistanceJoint.distance -= realInStrength * Time.deltaTime;
             }
         }
