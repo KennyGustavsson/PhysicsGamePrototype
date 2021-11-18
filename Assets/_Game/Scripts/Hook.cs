@@ -55,9 +55,9 @@ public class Hook : MonoBehaviour
                 parent.DetachRope();
                 parent.AttachRope(other.contacts[0].point);    
             }
-            
-            Reset();
         }
+        
+        Reset();
     }
 
     public void SpawnHook(Vector3 spawnLocation, Vector2 direction, Grappel spawnParent)

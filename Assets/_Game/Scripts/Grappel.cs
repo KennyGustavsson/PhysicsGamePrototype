@@ -24,11 +24,16 @@ public class Grappel : MonoBehaviour
     
     public float MoveForce = 10f;
     public float ProjectilelaunceStrength = 100f;
-    public float jumpStrength = 400f;
-    public float realInStrength = 0f;
+    public float jumpForwardStrength = 400f;
+    public float jumpUpStrength = 400f;
+    //public float realInStrength = 0f;
 
     public LayerMask WallLayer;
     public bool RopeAttach = false;
+    
+    //RealIn
+    public float current, target, speed;
+    public bool RealIn;
     
     void Awake()
     {
@@ -73,6 +78,17 @@ public class Grappel : MonoBehaviour
         CheackRay();
         RenderRope();
         
+        if (Input.GetButtonDown("Jump"))
+        {
+            current = 0f;
+            RealIn = true;
+        }
+            
+        if (Input.GetButtonUp("Jump"))
+        {
+            RealIn = false;
+        }
+        
         if (RopeAttach)
         {
             if (Input.GetKey(KeyCode.D))
@@ -84,13 +100,10 @@ public class Grappel : MonoBehaviour
                 Body.AddForce(new Vector2(-MoveForce,0));
             }
 
-            if (Input.GetKey(KeyCode.Space))
+            if (RealIn)
             {
-                print(_DistanceJoint.distance);
-                realInStrength += Time.deltaTime;
-                Vector3 middelPos = Vector3.Lerp(AnchorPoint, PlayerPos,  realInStrength);
-                transform.position = middelPos;
-                //_DistanceJoint.distance -= realInStrength * Time.deltaTime;
+                current = Mathf.MoveTowards(current, target, speed * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, AnchorPoint, current);
             }
         }
     }
@@ -186,7 +199,7 @@ public class Grappel : MonoBehaviour
                 {
                     WheelBody.velocity = Vector2.zero;
                     WheelBody.angularVelocity = 0;
-                    WheelBody.AddForce((Body.velocity.normalized + Vector2.up) * jumpStrength, ForceMode2D.Impulse);
+                    WheelBody.AddForce((Body.velocity.normalized * jumpForwardStrength) + (Vector2.up * jumpUpStrength), ForceMode2D.Impulse);
                 }
                 else
                 {
