@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +16,12 @@ public class TimeRewindDistanceJoint : MonoBehaviour
     }
     
     private List<RewindTimeData> RewindList = new List<RewindTimeData>();
-    
+
+    private void Awake()
+    {
+        _DistanceJoint = GetComponent<DistanceJoint2D>();
+    }
+
     private void Start()
     {
         Manager = TimeManager.Instance;
@@ -58,6 +62,7 @@ public class TimeRewindDistanceJoint : MonoBehaviour
 
         // Unicycle data
         _DistanceJoint.enabled = TimeData.Enabled;
+        _DistanceJoint.connectedAnchor = TimeData.AnchorPoint;
 
         // Remove Last
         RewindList.RemoveAt(RewindList.Count - 1);
