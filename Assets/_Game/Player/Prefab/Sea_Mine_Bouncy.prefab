@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7656011133953432574}
   - component: {fileID: 7917116511387081307}
   m_Layer: 0
-  m_Name: Sea_Mine_Dynamic
+  m_Name: Sea_Mine_Bouncy
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8500799316463917547}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.43372503, y: 0.43372503, z: 0}
+  m_LocalPosition: {x: 2.19, y: 1.49, z: 0}
+  m_LocalScale: {x: 1.9364954, y: 1.9364954, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -102,8 +102,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Explosion: {fileID: 100000, guid: fb1312d91b8716042b1151f9b514fc16, type: 3}
   ExplosionRadius: 10
-  ExplosionForce: 150
-  BleedingEffectMultiplier: 0.33
+  ExplosionForce: 500
+  BleedingEffectMultiplier: 100
   OnlyOnPlayer: 1
   VisualizeExplosionSphere: 1
   CircleResolution: 32

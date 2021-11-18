@@ -56,7 +56,6 @@ public class Grappel : MonoBehaviour
         }
 
         Collider2D.size = new Vector2(3.71f, 12f);
-        Collider2D.offset = new Vector2(0, 5.7f);
         Collider2D.enabled = false;
         _DistanceJoint.enabled = false;
         _LineRenderer.enabled = false;

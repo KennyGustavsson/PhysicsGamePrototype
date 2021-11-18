@@ -10,7 +10,6 @@ public class ExplosionScript : MonoBehaviour
     [SerializeField] private float ExplosionRadius = 10.0f;
     [SerializeField] private float ExplosionForce = 100.0f;
     [SerializeField] private float BleedingEffectMultiplier = 0.33f;
-	[SerializeField] private bool OnlyOnPlayer = false;
 
     [Header("Debugging")]
     [SerializeField] private bool VisualizeExplosionSphere = true;
@@ -60,37 +59,28 @@ public class ExplosionScript : MonoBehaviour
 					impactComps.Collision(ExplosionForce * BleedingEffectMultiplier);
 				}
 			}
-
-			Explode();
 		}
 
-		if (OnlyOnPlayer) return;
+	    Vector2 Pos = transform.position;
+	    
+	    // Instantiate explosion
+	    Instantiate(Explosion, Pos, Quaternion.identity);
+	    this.gameObject.GetComponent<SpriteRenderer>().sprite = null;
+        
+	    // Add force
+	    var Hits = Physics2D.CircleCastAll(Pos, ExplosionRadius, Vector2.up);
 
-		Explode();
+	    foreach (var Hit in Hits)
+	    {
+		    Rigidbody2D rb = Hit.rigidbody;
+
+		    if (rb)
+		    {
+			    Vector2 Direction = (Hit.point - Pos).normalized;
+			    rb.AddForce(Direction * ExplosionForce, ForceMode2D.Impulse); 
+		    }
+	    }
+        
+	    Destroy(gameObject);
     }
-
-	private void Explode()
-    {
-		Vector2 Pos = transform.position;
-
-		// Instantiate explosion
-		Instantiate(Explosion, Pos, Quaternion.identity);
-		this.gameObject.GetComponent<SpriteRenderer>().sprite = null;
-
-		// Add force
-		var Hits = Physics2D.CircleCastAll(Pos, ExplosionRadius, Vector2.up);
-
-		foreach (var Hit in Hits)
-		{
-			Rigidbody2D rb = Hit.rigidbody;
-
-			if (rb)
-			{
-				Vector2 Direction = (Hit.point - Pos).normalized;
-				rb.AddForce(Direction * ExplosionForce, ForceMode2D.Impulse);
-			}
-		}
-
-		Destroy(gameObject);
-	}
 }
