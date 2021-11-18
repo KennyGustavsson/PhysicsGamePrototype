@@ -24,6 +24,8 @@ public class Grappel : MonoBehaviour
     
     public float MoveForce = 10f;
     public float ProjectilelaunceStrength = 100f;
+    public float jumpStrength = 400f;
+    public float realInStrength = 10;
 
     public LayerMask WallLayer;
     public bool RopeAttach = false;
@@ -59,8 +61,6 @@ public class Grappel : MonoBehaviour
         _DistanceJoint.enabled = false;
         _LineRenderer.enabled = false;
         _LineRenderer.positionCount = 0;
-
-
     }
 
     void Update()
@@ -82,6 +82,15 @@ public class Grappel : MonoBehaviour
             else if (Input.GetKey(KeyCode.A))
             {
                 Body.AddForce(new Vector2(-MoveForce,0));
+            }
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                print(_DistanceJoint.distance);
+
+                Vector3 moddelPos = Vector3.Lerp(AnchorPoint, PlayerPos, realInStrength * Time.deltaTime);
+                
+                //_DistanceJoint.distance -= realInStrength * Time.deltaTime;
             }
         }
     }
@@ -131,13 +140,11 @@ public class Grappel : MonoBehaviour
             Rigidbody2D WheelBody = wheel.GetComponent<Rigidbody2D>();
             WheelBody.simulated = false;
         }
-        
 
         //--------------------------//
         RopePoints.Add(PlayerPos);
         RopePoints.Add(HitPos);
 
-        //PlayerPoint = RopePoints[0];
         AnchorPoint = RopePoints[RopePoints.Count - 1];
         
         RopeAttach = true;
@@ -152,8 +159,6 @@ public class Grappel : MonoBehaviour
         if (!RopePoints.Contains(HitPos))
         {
             RopePoints.Add(HitPos);
-
-            //RopePoints.Reverse();
         }
 
         AnchorPoint = RopePoints[RopePoints.Count - 1];
@@ -164,25 +169,6 @@ public class Grappel : MonoBehaviour
         _DistanceJoint.connectedAnchor = AnchorPoint;
         _DistanceJoint.enableCollision = true;
         _DistanceJoint.enabled = true;
-
-        /*
-        int RopeCount = RopePoints.Count - 1;
-        
-        (float dist, int id) closest = ( float.MaxValue, -1 );
-        for( int i = 0; i < RopeCount; i++ ) {
-            float dist = SqDist( HitPos, RopePoints[i] );
-            if( dist < closest.dist )
-                closest = ( dist, i );
-        }
-        
-        AnchorPoint = RopePoints[closest.id];*/
-        
-    }
-    
-    static float SqDist( Vector2 a, Vector2 b ) {
-        float dx = b.x - a.x; // microoptimization. this is much faster than (a-b).sqrMagnitude.
-        float dy = b.y - a.y; // we avoid a Vector2 subtract op, constructor, and property access this way 
-        return dx * dx + dy * dy;
     }
 
     public void DetachRope()
@@ -200,7 +186,7 @@ public class Grappel : MonoBehaviour
                 {
                     WheelBody.velocity = Vector2.zero;
                     WheelBody.angularVelocity = 0;
-                    WheelBody.AddForce((Body.velocity.normalized + Vector2.up) * 400, ForceMode2D.Impulse);
+                    WheelBody.AddForce((Body.velocity.normalized + Vector2.up) * jumpStrength, ForceMode2D.Impulse);
                 }
                 else
                 {
@@ -225,15 +211,10 @@ public class Grappel : MonoBehaviour
         }
         
         _LineRenderer.enabled = true;
-        int Count = _LineRenderer.positionCount = RopePoints.Count;
+        _LineRenderer.positionCount = RopePoints.Count;
         
         RopePoints[0] = PlayerPos;
         
-        for (int i = 0; i < Count ; i++)
-        {
-            print("index = " + i + " RopePoints.Count = " + (_LineRenderer.positionCount) + " [RopeCount - i] = " + (Count - i));
-        }
-
         List<Vector3> points = new List<Vector3>();
 
         foreach (var point in RopePoints)
@@ -244,7 +225,6 @@ public class Grappel : MonoBehaviour
         Vector3 player = points[0];
         points.RemoveAt(0);
         points.Add(player);
-
         _LineRenderer.SetPositions(points.ToArray());
     }
 
@@ -268,15 +248,12 @@ public class Grappel : MonoBehaviour
         {
             return;
         }
-
-        ///PlayerPoint = RopePoints[0];
+        
         AnchorPoint = RopePoints[RopePoints.Count - 1];
 
         float Distance = Vector2.Distance(PlayerPos, AnchorPoint);
         Vector2 RayDirection = (AnchorPoint - PlayerPos).normalized;
         Vector2 RayLength = RayDirection * Distance;
-        
-        //Debug.DrawLine(PlayerPos,PlayerPos + RayLength, Color.red);
         
         RaycastHit2D hit = Physics2D.Raycast(PlayerPos, RayLength, Distance,WallLayer);
         
@@ -289,33 +266,7 @@ public class Grappel : MonoBehaviour
                 UpdateAnchor(hit.point);
                 
                 print("add hit.point to rope Positions");
-                
-                //RopePoints.Add(hit.point);
-                //_DistanceJoint.distance = Distance;
             }
-            
         }
-    }
-
-    Vector2 SetRope(int RopeIndex)
-    {
-        if ((RopeIndex - 1) != -1 )
-        {
-            
-        }
-        
-        return Vector2.zero;
-    }
-    
-    List<Vector2> ReverseList(List<Vector2> ToReverse)
-    {
-        for (int i = 0; i < ToReverse.Count - 1; i++)
-        {
-            Vector2 temp = ToReverse[i];
-            ToReverse[i] = ToReverse[i + 1];
-            ToReverse[i + 1] = temp;
-        }
-
-        return ToReverse;
     }
 }

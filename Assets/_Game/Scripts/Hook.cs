@@ -44,7 +44,7 @@ public class Hook : MonoBehaviour
     {
         print("Collision" + other.transform.gameObject.name);
 
-        if (other.gameObject != parent.gameObject)
+        if (other.gameObject.layer == 8)
         {
             if (!parent.RopeAttach)
             {
